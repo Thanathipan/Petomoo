@@ -1,0 +1,47 @@
+
+* {
+    font-family: Poppins;
+
+    --medium: 3vw;
+    --small: 1.5vw;
+    --middle: 2vw;
+
+    --bg-odd: #47321a;
+    --bg-even: #37230a;
+    --add: #c8914b;
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    scroll-behavior: smooth;
+    scroll-padding-top: 4vw;
+}
+
+.benefits {
+    text-align: center;
+    padding: 50px;
+}
+
+.benefit-cards {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    width: 500px;
+    /* height: 600px; */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card img {
+    width: 100%;
+    border-radius: 10px;
+}

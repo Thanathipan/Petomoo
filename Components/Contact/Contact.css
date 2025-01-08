@@ -1,0 +1,40 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+* {
+    font-family: Poppins;
+
+    --medium: 3vw;
+    --small: 1.5vw;
+    --middle: 2vw;
+
+    --bg-odd: #47321a;
+    --bg-even: #37230a;
+    --add: #c8914b;
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    scroll-behavior: smooth;
+    scroll-padding-top: 4vw;
+}
+
+.contact {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 50px;
+    background-color: #182559;
+    border-radius: 20px;
+    margin: 80px;
+}
+
+.contact-info {
+    width: 50%;
+    color:#fff;
+}
+
+.contact-image img {
+    width: 100%;
+    border-radius: 10px;
+}

@@ -1,0 +1,68 @@
+/* Hero Section */
+.hero {
+  background-image:url(../../Assets/pexels-tima-miroshnichenko-6235661.jpg);/* Replace with your hero image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 80vh;
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color: #fff;
+    text-align: center;
+  }
+  
+  .hero-overlay h1 {
+    background: rgba(0, 0, 0, 0.6); /* Semi-transparent overlay for text readability */
+    padding: 20px 30px;
+    border-radius: 8px;
+    font-size: 2rem;
+  }
+  
+  /* Clinic Section */
+  .clinic-section {
+    display: flex;
+    justify-content: center;
+    padding: 50px 20px;
+    background-color: #f9f9f9;
+    height: 70vh;
+  }
+  
+  .clinic-content {
+    display: flex;
+    max-width: 1200px;
+    gap: 40px;
+    align-items: center;
+  }
+  
+  .clinic-content img {
+    max-width: 500px;
+    width: 100%;
+    border-radius: 10px;
+  }
+  
+  .clinic-details {
+    max-width: 600px;
+  }
+  
+  .clinic-details h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+  
+  .clinic-details p {
+    margin-bottom: 20px;
+    color: #555;
+  }
+  
+  .schedule-btn {
+    display: inline-block;
+    background-color: #007BFF;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+  }
