@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import "./Payment.css";
 
-const BookingVisitStep3 = () => {
-  const [paymentMethod, setPaymentMethod] = useState("Credit Card");
-  const [cardName, setCardName] = useState("");
-  const [cardNumber, setCardNumber] = useState("");
-  const [expiredCard, setExpiredCard] = useState("");
-  const [cvv, setCvv] = useState("");
+const BookingVisitStep3: React.FC = () => {
+  const [paymentMethod, setPaymentMethod] = useState<string>("Credit Card");
+  const [cardName, setCardName] = useState<string>("");
+  const [cardNumber, setCardNumber] = useState<string>("");
+  const [expiredCard, setExpiredCard] = useState<string>("");
+  const [cvv, setCvv] = useState<string>("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     alert(`
       Payment Details:
@@ -24,7 +24,9 @@ const BookingVisitStep3 = () => {
     <div className="form-container">
       <div className="form-header">
         <h1>Booking Visit Form</h1>
-        <button className="close-button">&times;</button>
+        <button className="close-button" aria-label="Close Form">
+          &times;
+        </button>
       </div>
       <div className="progress-bar">
         <div className="step">1</div>
@@ -42,8 +44,8 @@ const BookingVisitStep3 = () => {
                 value={paymentMethod}
                 onChange={(e) => setPaymentMethod(e.target.value)}
               >
-                <option>Credit Card</option>
-                <option>Debit Card</option>
+                <option value="Credit Card">Credit Card</option>
+                <option value="Debit Card">Debit Card</option>
               </select>
             </div>
             <div className="form-group">

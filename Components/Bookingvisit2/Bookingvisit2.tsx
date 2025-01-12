@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import "./Bookingvisit2.css";
 
-const Bookingvisit2 = () => {
+// Define the type for the selected date
+type SelectedDate = string | null;
+
+const Bookingvisit2: React.FC = () => {
   const months = [
     "January",
     "February",
@@ -17,9 +20,9 @@ const Bookingvisit2 = () => {
     "December",
   ];
 
-  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
-  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [currentMonth, setCurrentMonth] = useState<number>(new Date().getMonth());
+  const [currentYear, setCurrentYear] = useState<number>(new Date().getFullYear());
+  const [selectedDate, setSelectedDate] = useState<SelectedDate>(null);
 
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   const firstDay = new Date(currentYear, currentMonth, 1).getDay();
@@ -27,31 +30,34 @@ const Bookingvisit2 = () => {
   const handlePrevMonth = () => {
     if (currentMonth === 0) {
       setCurrentMonth(11);
-      setCurrentYear(currentYear - 1);
+      setCurrentYear((prevYear) => prevYear - 1);
     } else {
-      setCurrentMonth(currentMonth - 1);
+      setCurrentMonth((prevMonth) => prevMonth - 1);
     }
   };
 
   const handleNextMonth = () => {
     if (currentMonth === 11) {
       setCurrentMonth(0);
-      setCurrentYear(currentYear + 1);
+      setCurrentYear((prevYear) => prevYear + 1);
     } else {
-      setCurrentMonth(currentMonth + 1);
+      setCurrentMonth((prevMonth) => prevMonth + 1);
     }
   };
 
-  const handleDateSelect = (day) => {
-    setSelectedDate(`${day} ${months[currentMonth]} ${currentYear}`);
-    alert(`Selected Date: ${day} ${months[currentMonth]} ${currentYear}`);
+  const handleDateSelect = (day: number) => {
+    const dateString = `${day} ${months[currentMonth]} ${currentYear}`;
+    setSelectedDate(dateString);
+    alert(`Selected Date: ${dateString}`);
   };
 
   return (
     <div className="form-container">
       <div className="form-header">
         <h1>Booking Visit Form</h1>
-        <button className="close-button">&times;</button>
+        <button className="close-button" aria-label="Close">
+          &times;
+        </button>
       </div>
       <div className="progress-bar">
         <div className="step">1</div>
@@ -77,40 +83,37 @@ const Bookingvisit2 = () => {
                 .map((_, index) => (
                   <div key={`empty-${index}`} />
                 ))}
-              {Array(daysInMonth)
-                .fill(null)
-                .map((_, day) => (
-                  <div
-                    key={day + 1}
-                    className={`clickable-day ${
-                      selectedDate ===
-                      `${day + 1} ${months[currentMonth]} ${currentYear}`
-                        ? "active"
-                        : ""
-                    }`}
-                    onClick={() => handleDateSelect(day + 1)}
-                  >
-                    {day + 1}
-                  </div>
-                ))}
+              {Array.from({ length: daysInMonth }, (_, day) => (
+                <div
+                  key={day + 1}
+                  className={`clickable-day ${
+                    selectedDate === `${day + 1} ${months[currentMonth]} ${currentYear}`
+                      ? "active"
+                      : ""
+                  }`}
+                  onClick={() => handleDateSelect(day + 1)}
+                >
+                  {day + 1}
+                </div>
+              ))}
             </div>
           </div>
           <div className="form-group">
             <label htmlFor="time">Time</label>
-            <input type="text" id="time" placeholder="16:00" />
+            <input type="time" id="time" defaultValue="16:00" />
           </div>
           <div className="form-group">
             <label htmlFor="clinic">Clinic</label>
-            <select id="clinic">
-              <option selected>Pawcare Barktown</option>
-              <option>Clinic 2</option>
+            <select id="clinic" defaultValue="Pawcare Barktown">
+              <option value="Pawcare Barktown">Pawcare Barktown</option>
+              <option value="Clinic 2">Clinic 2</option>
             </select>
           </div>
           <div className="form-group">
             <label htmlFor="consultation">Consultation with</label>
-            <select id="consultation">
-              <option selected>Jasmine Miller</option>
-              <option>Consultant 2</option>
+            <select id="consultation" defaultValue="Jasmine Miller">
+              <option value="Jasmine Miller">Jasmine Miller</option>
+              <option value="Consultant 2">Consultant 2</option>
             </select>
           </div>
         </div>

@@ -1,9 +1,13 @@
-import './clinic.css'
-import image from '../../Assets/pexels-tima-miroshnichenko-6235661.jpg'
+import React from "react";
+import "./clinic.css";
+import Image from 'next/image';
 
-const clinic = () => {
+import image from "../../Assets/pexels-tima-miroshnichenko-6235661.jpg";
+
+const Clinic: React.FC = () => {
   return (
     <main>
+      {/* Hero Section */}
       <section className="hero">
         <div className="hero-overlay">
           <h1>Convenient online and offline veterinary services.</h1>
@@ -13,9 +17,10 @@ const clinic = () => {
       {/* Clinic Section */}
       <section className="clinic-section">
         <div className="clinic-content">
-          <img
+          <Image
             src={image}
             alt="Visit Our Clinic"
+            className="clinic-image"
           />
           <div className="clinic-details">
             <h2>Visit Our Clinic</h2>
@@ -35,4 +40,4 @@ const clinic = () => {
   );
 };
 
-export default clinic;
+export default Clinic;

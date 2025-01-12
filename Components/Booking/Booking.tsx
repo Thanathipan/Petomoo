@@ -1,8 +1,9 @@
 import "./Booking.css"; // Link to your CSS file
-import image1 from '../../Assets/AdobeStock_994072575_Preview.jpeg';
-import image2 from '../../Assets/02_3464BethelDr_574_FrontView_HiRes_450x250.jpg';
+import Image from "next/image"; // Use Next.js Image component for optimized image handling
+import image1 from "../../Assets/AdobeStock_994072575_Preview.jpeg";
+import image2 from "../../Assets/02_3464BethelDr_574_FrontView_HiRes_450x250.jpg";
 
-const Booking = () => {
+const Booking: React.FC = () => {
   return (
     <div>
       {/* Hero Section */}
@@ -28,7 +29,8 @@ const Booking = () => {
             diagnostic tools, and create personalized treatments tailored to
             your pet’s unique needs.
           </p>
-          <img src={image1} alt="Providing best services for pets" />
+          {/* Replace img with Next.js Image */}
+          <Image src={image1} alt="Providing best services for pets" priority />
         </div>
       </section>
 
@@ -39,7 +41,8 @@ const Booking = () => {
           <a href="#">See all</a>
         </div>
         <div className="location-card">
-          <img src={image2} alt="Vavuniya Clinic" />
+          {/* Replace img with Next.js Image */}
+          <Image src={image2} alt="Vavuniya Clinic" priority />
           <div className="card-content">
             <h3>Vavuniya</h3>
             <p>

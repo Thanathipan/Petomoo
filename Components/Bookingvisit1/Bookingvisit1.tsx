@@ -1,8 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import "./Bookingvisit1.css";
 
-const Bookingvisit1 = ({ onContinue }) => {
-  const [formData, setFormData] = useState({
+// Define the type for the form data
+interface FormData {
+  firstName: string;
+  lastName: string;
+  mobile: string;
+  email: string;
+  address: string;
+  petName: string;
+  type: string;
+  breed: string;
+  age: string;
+  illnessPeriod: string;
+  problem: string;
+}
+
+// Props type for the component
+interface Bookingvisit1Props {
+  onContinue: (formData: FormData) => void;
+}
+
+const Bookingvisit1: React.FC<Bookingvisit1Props> = ({ onContinue }) => {
+  const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
     mobile: "",
@@ -16,7 +36,8 @@ const Bookingvisit1 = ({ onContinue }) => {
     problem: "",
   });
 
-  const handleChange = (e) => {
+  // Handle input changes
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -24,21 +45,25 @@ const Bookingvisit1 = ({ onContinue }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  // Handle form submission
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Basic validation (add more as needed)
+
+    // Basic validation
     if (!formData.firstName || !formData.petName || !formData.problem) {
       alert("Please fill in all required fields.");
       return;
     }
-    onContinue(formData); // Pass data to the parent or next step
+
+    // Pass data to the parent component or next step
+    onContinue(formData);
   };
 
   return (
     <div className="form-container">
       <div className="form-header">
         <h1>Booking Visit Form</h1>
-        <button className="close-button">&times;</button>
+        <button className="close-button" aria-label="Close">&times;</button>
       </div>
       <div className="progress-bar">
         <div className="step active">1</div>
@@ -70,7 +95,7 @@ const Bookingvisit1 = ({ onContinue }) => {
         <div className="form-group">
           <label htmlFor="mobile">Mobile Number</label>
           <input
-            type="text"
+            type="tel"
             id="mobile"
             placeholder="077-1234567"
             value={formData.mobile}
