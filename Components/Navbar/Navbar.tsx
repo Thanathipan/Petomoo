@@ -11,20 +11,22 @@ const Navbar: React.FC = () => {
         <Image className="logo" src={Logo} alt="Logo" width={120} height={60} />
       </Link>
       <ul>
-        <li>
-          <Link href="#consultation">Consultation</Link>
+      <li>
+          <Link href="/Landingpage">Home</Link>
         </li>
         <li>
-          <Link href="#pet-shop">Pet Shop</Link>
+          <Link href="/Booking">Consultation</Link>
+        </li>
+        
+        <li>
+          <Link href="/clinic">Clinic</Link>
         </li>
         <li>
-          <Link href="#sign-up">Sign Up</Link>
+          <Link href="/sign-up">Sign Up</Link>
         </li>
+        
         <li>
-          <Link href="#cart">Cart</Link>
-        </li>
-        <li>
-          <Link href="#book-now">Book Now</Link>
+          <Link href="">Book Now</Link>
         </li>
       </ul>
     </nav>

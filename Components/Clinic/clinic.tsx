@@ -2,13 +2,13 @@ import React from "react";
 import "./clinic.css";
 import Image from 'next/image';
 
-import image from "../../Assets/pexels-tima-miroshnichenko-6235661.jpg";
+import image from "../../public/images/pexels-tima-miroshnichenko-6235111.jpg";
 
 const Clinic: React.FC = () => {
   return (
     <main>
       {/* Hero Section */}
-      <section className="hero">
+      <section className="clinic-hero">
         <div className="hero-overlay">
           <h1>Convenient online and offline veterinary services.</h1>
         </div>

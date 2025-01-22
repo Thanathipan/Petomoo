@@ -1,7 +1,7 @@
 import "./Booking.css"; // Link to your CSS file
 import Image from "next/image"; // Use Next.js Image component for optimized image handling
-import image1 from "../../Assets/AdobeStock_994072575_Preview.jpeg";
-import image2 from "../../Assets/02_3464BethelDr_574_FrontView_HiRes_450x250.jpg";
+import image1 from "../../public/images/AdobeStock_994072575_Preview.jpeg";
+import image2 from "../../public/images/02_3464BethelDr_574_FrontView_HiRes_450x250.jpg";
 
 const Booking: React.FC = () => {
   return (

@@ -33,7 +33,7 @@ body {
   /* Hero Section */
   .hero {
     position: relative;
-    background-image: url('../../Assets/AdobeStock_269478900_Preview.jpeg'); /* Replace with the actual image URL */
+    background-image: url('../../public/images/AdobeStock_269478900_Preview.jpeg'); /* Replace with the actual image URL */
     background-size: cover;
     background-position: center;
     height: 700px;
