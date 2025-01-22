@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router"; // Use 'next/navigation' for App Router
 import "./Bookingvisit2.css";
 
 // Define the type for the selected date
 type SelectedDate = string | null;
 
 const Bookingvisit2: React.FC = () => {
+  const router = useRouter();
+
   const months = [
     "January",
     "February",
@@ -49,6 +52,15 @@ const Bookingvisit2: React.FC = () => {
     const dateString = `${day} ${months[currentMonth]} ${currentYear}`;
     setSelectedDate(dateString);
     alert(`Selected Date: ${dateString}`);
+  };
+
+  const handleContinue = () => {
+    if (!selectedDate) {
+      alert("Please select a date before continuing.");
+      return;
+    }
+
+    router.push("/Payment");
   };
 
   return (
@@ -125,7 +137,9 @@ const Bookingvisit2: React.FC = () => {
           </div>
         </div>
       </div>
-      <button className="continue-button">Continue</button>
+      <button className="continue-button" onClick={handleContinue}>
+        Continue
+      </button>
     </div>
   );
 };

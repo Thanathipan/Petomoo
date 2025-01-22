@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
+import { useRouter } from "next/router"; // Use 'next/navigation' for App Router
 import "./Bookingvisit1.css";
 
 // Define the type for the form data
@@ -16,12 +17,9 @@ interface FormData {
   problem: string;
 }
 
-// Props type for the component
-interface Bookingvisit1Props {
-  onContinue: (formData: FormData) => void;
-}
+const Bookingvisit1: React.FC = () => {
+  const router = useRouter();
 
-const Bookingvisit1: React.FC<Bookingvisit1Props> = ({ onContinue }) => {
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
@@ -55,15 +53,22 @@ const Bookingvisit1: React.FC<Bookingvisit1Props> = ({ onContinue }) => {
       return;
     }
 
-    // Pass data to the parent component or next step
-    onContinue(formData);
+    // Navigate to Bookingvisit2
+    router.push({
+      pathname: "/Bookingvisit2",
+      query: {
+        ...formData, // Pass form data as query parameters (optional)
+      },
+    });
   };
 
   return (
     <div className="form-container">
       <div className="form-header">
         <h1>Booking Visit Form</h1>
-        <button className="close-button" aria-label="Close">&times;</button>
+        <button className="close-button" aria-label="Close">
+          &times;
+        </button>
       </div>
       <div className="progress-bar">
         <div className="step active">1</div>
