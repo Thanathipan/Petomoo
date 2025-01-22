@@ -1,39 +1,22 @@
-import { Schema, model, models } from "mongoose";
-import bcrypt from 'bcrypt';
+import { Schema, model, models, Document } from "mongoose";
 
-const userSchema = new Schema(
-    {
-        firstName: { type: String, required: true },
-        lastName: { type: String, required: true },
-        email: {
-            type: String,
-            unique: true,
-            sparse: true,
-            required: false,
-            match: [/.+@.+\..+/, "Invalid email format"]
-        },
-        password: { type: String, required: true },
-        userType: { type: String, required: true, enum: ["consumer", "seller", "delivery-partner", "delivery-person", "admin", "super-admin"] },
-        profileImage: { type: String, required: false },
-        favourites: {
-            favProducts: [{ type: Schema.Types.ObjectId, ref: "Product" }],
-            favReviews: [{ type: Schema.Types.ObjectId, ref: "Review" }]
-        }
-    },
-    { timestamps: true }
-);
+// Define an interface for the User document
+interface IUser extends Document {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  phoneNumber: string; // Add phoneNumber to the interface
+}
 
-userSchema.pre('save', async function (next) {
-    if (this.isModified('password')) {
-        this.password = await bcrypt.hash(this.password, 10);
-    }
-    next();
-});
+const userSchema = new Schema<IUser>({
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  phoneNumber: { type: String, required: true, unique: true } // Add phoneNumber to the schema
+}, { timestamps: true });
 
-userSchema.methods.comparePassword = function (candidatePassword: string) {
-    return bcrypt.compare(candidatePassword, this.password);
-};
-
-const userModel = models.User || model('User', userSchema);
+const userModel = models.User || model<IUser>('User', userSchema);
 
 export default userModel;

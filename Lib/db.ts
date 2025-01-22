@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-
 const MONGODB_URI = process.env.MONGODB_URI;
 const dbConnect = async () => {
   const connectionState = mongoose.connection.readyState;
@@ -15,7 +14,7 @@ const dbConnect = async () => {
   // Try to connect to MongoDB
   try {
     await mongoose.connect(MONGODB_URI!, {
-      dbName: 'Petomoo',  // Ensure the database name is correct
+      dbName: 'petomoo',  // Ensure the database name is correct
       bufferCommands: true, // Buffer commands while connecting
     });
     console.log("MongoDB connected successfully");

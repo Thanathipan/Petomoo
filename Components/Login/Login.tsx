@@ -1,69 +1,55 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
-import './Signup.css';
+import './Login.css';
 
-const Signup: React.FC = () => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+const Login: React.FC = () => {
   const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
-    // Reset messages
+    
     setErrorMessage('');
     setSuccessMessage('');
-  
-    const data = { firstName, lastName, email, phoneNumber, password };
-  
+
+    const data = { email, password };
+
     try {
-      const response = await fetch('/api/user', {
+      const response = await fetch('/api/Login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
-  
+
       const result = await response.json();
-  
+
       if (response.ok) {
         setSuccessMessage(result.message);
-  
-        // Redirect to profile page after successful signup
-        localStorage.setItem('user', JSON.stringify(data)); // Store user data in localStorage
+
+        // Store user data in localStorage and redirect to Profile page
+        localStorage.setItem('user', JSON.stringify(result.user)); // Store user data
         router.push('/Landingpage'); // Redirect to profile page
       } else {
         setErrorMessage(result.message);
       }
-    } catch (error) {
+    } catch (error: any) {
       setErrorMessage('Something went wrong. Please try again.');
     }
   };
-  
 
   return (
-    <main>
-      <div className="signup-container">
-        <h1>Sign Up</h1>
+    <section>
+      <div className="login-container">
+        <h1>Log In</h1>
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="First Name"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Last Name"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            required
-          />
           <input
             type="email"
             placeholder="Email"
@@ -71,33 +57,34 @@ const Signup: React.FC = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <input
-            type="tel"
-            placeholder="Phone"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            required
-          />
           <div className="password-field">
             <input
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <span className="eye-icon">👁️</span>
+            <span
+              className="eye-icon"
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? '🙈' : '👁️'}
+            </span>
           </div>
-          <button type="submit">Sign Up</button>
+          <button type="submit">Log In</button>
         </form>
         {errorMessage && <p className="error">{errorMessage}</p>}
         {successMessage && <p className="success">{successMessage}</p>}
         <p>
-          Already have an account? <a href="/login">Log In</a>
+          <a href="/forgot-password">Forgot Password?</a>
+        </p>
+        <p>
+          Don't have an account? <a href="/Signup">Sign Up</a>
         </p>
       </div>
-    </main>
+    </section>
   );
-}
+};
 
-export default Signup;
+export default Login;
