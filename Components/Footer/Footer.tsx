@@ -23,7 +23,7 @@ const Footer: React.FC = () => {
             <div className="footer-column">
                 <h3>Join as pawfamily and get 10% OFF</h3>
                 <p>Our services are wide open for you</p>
-                <button className="promo-button">Be Pawfamily</button>
+                <button className="promo-button">Be with petomoo</button>
             </div>
         </footer>
     );
