@@ -117,17 +117,11 @@ const Bookingvisit2: React.FC = () => {
           <div className="form-group">
             <label htmlFor="clinic">Clinic</label>
             <select id="clinic" defaultValue="Pawcare Barktown">
-              <option value="Pawcare Barktown">Pawcare Barktown</option>
+              <option value="Pawcare Barktown">City clinic</option>
               <option value="Clinic 2">Clinic 2</option>
             </select>
           </div>
-          <div className="form-group">
-            <label htmlFor="consultation">Consultation with</label>
-            <select id="consultation" defaultValue="Jasmine Miller">
-              <option value="Jasmine Miller">Jasmine Miller</option>
-              <option value="Consultant 2">Consultant 2</option>
-            </select>
-          </div>
+          
         </div>
         <div className="right">
           <div className="pet-info">
