@@ -60,7 +60,7 @@ const Bookingvisit2: React.FC = () => {
       return;
     }
 
-    router.push("/Payment");
+    router.push("/payment");
   };
 
   return (

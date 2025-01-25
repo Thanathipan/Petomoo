@@ -55,7 +55,7 @@ const Bookingvisit1: React.FC = () => {
 
     // Navigate to Bookingvisit2
     router.push({
-      pathname: "/Bookingvisit2",
+      pathname: "/bookingvisit2",
       query: {
         ...formData, // Pass form data as query parameters (optional)
       },

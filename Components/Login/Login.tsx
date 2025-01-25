@@ -23,7 +23,7 @@ const Login: React.FC = () => {
     const data = { email, password };
 
     try {
-      const response = await fetch('/api/Login', {
+      const response = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -34,9 +34,9 @@ const Login: React.FC = () => {
       if (response.ok) {
         setSuccessMessage(result.message);
 
-        // Store user data in localStorage and redirect to Profile page
+        // Store user data in localStorage and redirect to profile page
         localStorage.setItem('user', JSON.stringify(result.user)); // Store user data
-        router.push('/Landingpage'); // Redirect to profile page
+        router.push('/Profile'); // Redirect to profile page
       } else {
         setErrorMessage(result.message);
       }
@@ -80,7 +80,7 @@ const Login: React.FC = () => {
           <a href="/forgot-password">Forgot Password?</a>
         </p>
         <p>
-          Don't have an account? <a href="/Signup">Sign Up</a>
+          Don't have an account? <a href="/signup">Sign Up</a>
         </p>
       </div>
     </section>
