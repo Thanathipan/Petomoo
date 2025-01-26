@@ -1,97 +1,109 @@
-import { useState } from "react";
-import styles from "./AddClinicPage.module.css"; // Import the CSS module
+import React, { useState } from "react";
+import "./AddClinic.css";
 
-const AddClinicPage = () => {
+interface Clinic {
+  id: string;
+  clinicName: string;
+  location: string;
+}
+
+const AddClinic: React.FC = () => {
   const [clinicName, setClinicName] = useState("");
-  const [clinicPhoto, setClinicPhoto] = useState<File | null>(null);
   const [location, setLocation] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [clinics, setClinics] = useState<Clinic[]>([]);
 
+  // Fetch clinics from the backend
+  const fetchClinics = async () => {
+    try {
+      const response = await fetch("/api/Clinicpanel");
+      const data = await response.json();
+      setClinics(data);
+    } catch (error) {
+      setMessage("Failed to fetch clinics.");
+    }
+  };
+
+  // Submit form and add clinic
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setMessage("");
 
-    if (!clinicName || !clinicPhoto || !location) {
-      alert("Please fill all fields");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("clinicName", clinicName);
-    formData.append("clinicPhoto", clinicPhoto);
-    formData.append("location", location);
+    const data = { clinicName, location };
 
     try {
-      const response = await fetch("/api/Addclinic/", {
+      const response = await fetch("/api/addclinic", {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
       });
 
       if (response.ok) {
-        alert("Clinic added successfully!");
+        setMessage("Clinic added successfully!");
         setClinicName("");
-        setClinicPhoto(null);
         setLocation("");
+        await fetchClinics(); // Refresh the clinic list after adding
       } else {
-        alert("Failed to add clinic.");
+        const errorData = await response.json();
+        setMessage(`Error: ${errorData.message}`);
       }
     } catch (error) {
-      console.error("Error adding clinic:", error);
-      alert("An error occurred.");
+      setMessage("An error occurred while adding the clinic.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.formWrapper}>
-        <h1 className={styles.title}>Add Clinic</h1>
-        <form onSubmit={handleSubmit} className={styles.form}>
-          <div className={styles.inputGroup}>
-            <label htmlFor="clinicName" className={styles.label}>
-              Clinic Name
-            </label>
-            <input
-              type="text"
-              id="clinicName"
-              value={clinicName}
-              onChange={(e) => setClinicName(e.target.value)}
-              className={styles.input}
-              required
-            />
-          </div>
-          <div className={styles.inputGroup}>
-            <label htmlFor="clinicPhoto" className={styles.label}>
-              Clinic Photo
-            </label>
-            <input
-              type="file"
-              id="clinicPhoto"
-              accept="image/*"
-              onChange={(e) =>
-                setClinicPhoto(e.target.files ? e.target.files[0] : null)
-              }
-              className={styles.input}
-              required
-            />
-          </div>
-          <div className={styles.inputGroup}>
-            <label htmlFor="location" className={styles.label}>
-              Location
-            </label>
-            <input
-              type="text"
-              id="location"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              className={styles.input}
-              required
-            />
-          </div>
-          <button type="submit" className={styles.button}>
-            Add Clinic
-          </button>
-        </form>
+    <div className="add-clinic-container">
+      <h1>Add Clinic</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="clinicName">Clinic Name</label>
+          <input
+            type="text"
+            id="clinicName"
+            value={clinicName}
+            onChange={(e) => setClinicName(e.target.value)}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="location">Location</label>
+          <input
+            type="text"
+            id="location"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            required
+          />
+        </div>
+
+        <button type="submit" disabled={loading}>
+          {loading ? "Adding..." : "Add Clinic"}
+        </button>
+      </form>
+
+      {message && <p className={`message ${message.includes('success') ? 'success' : 'error'}`}>{message}</p>}
+
+      <h2>Clinic List</h2>
+      <div className="clinic-list">
+        {clinics.length === 0 ? (
+          <p>No clinics available</p>
+        ) : (
+          clinics.map((clinic) => (
+            <div key={clinic.id} className="clinic-card">
+              <h3>{clinic.clinicName}</h3>
+              <p>{clinic.location}</p>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
 };
 
-export default AddClinicPage;
+export default AddClinic;

@@ -36,7 +36,7 @@ const Login: React.FC = () => {
 
         // Store user data in localStorage and redirect to profile page
         localStorage.setItem('user', JSON.stringify(result.user)); // Store user data
-        router.push('/Profile'); // Redirect to profile page
+        router.push('/landingpage2'); // Redirect to profile page
       } else {
         setErrorMessage(result.message);
       }

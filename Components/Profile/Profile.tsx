@@ -149,7 +149,7 @@ const profile = () => {
         </div>
 
         <div className={styles.infoprofile}>
-          <h1>profile Information</h1>
+          <h1>Edit profile</h1>
           <p className={styles.userEmail}>{userData.email || "No email available"}</p>
         </div>
 

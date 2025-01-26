@@ -1,9 +1,9 @@
 
 body, html {
-    height: 100px;
+    height: 100;
     margin: 0;
     background-color: rgb(255, 255, 255);
-    color: white;
+    color: rgb(34, 149, 178);
     font-family: 'Poppins', sans-serif;
     box-sizing: border-box; /*Universal box-sizing for consistency*/
 }
@@ -16,8 +16,10 @@ body, html {
     justify-content: flex-start;
     height: 100%;
     padding-top: 80px;
-    background-color: F7F9FA;
-    color: white;
+    /* background-color: rgb(24, 119, 146); */
+    color: rgb(245, 245, 245);
+    border: 10px solid black;
+    border-radius: 30px;
 }
 
 /* Header Section */
@@ -27,7 +29,8 @@ body, html {
     align-items: center;
     width: 100%;
     max-width: 1200px;
-    padding: 20px;
+    padding: 40px;
+    padding-top: 55px;
 }
 
 
@@ -50,13 +53,14 @@ body, html {
     width: 150px;
     height: 150px;
     border-radius: 30%;
-    border: 3px solid #0B63F8;
+    border: 3px solid #b3acac;
     object-fit: cover;
 }
 
 /* profile Info */
 .infoprofile {
     text-align: center;
+    color: black;
 }
 
 .infoprofile h1 {
@@ -71,7 +75,7 @@ body, html {
 
 /* Buttons */
 .buttonSave {
-    background-color: #0B63F8;
+    background-color: #1873e8;
     color: white;
     padding: 15px 25px;
     border: none;
@@ -85,7 +89,7 @@ body, html {
 
 /* Hover and Active Effects */
 .buttonSave:hover {
-    background-color: #20b5e2;
+    background-color: rgb(18, 59, 192);
     transform: scale(1.1);
 }
 
@@ -146,9 +150,10 @@ body, html {
 }
 
 .logoutButton {
-    background-color: #c70808de;
+    background-color: rgb(235, 81, 92);
     color: white;
     padding: 10px 0px;
+    margin-left: 30px;
     border: none;
     border-radius: 5px;
     box-shadow: 10px;
