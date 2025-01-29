@@ -34,6 +34,8 @@ const Bookingvisit1: React.FC = () => {
     problem: "",
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false); // Track submission state
+
   // Handle input changes
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
@@ -44,22 +46,38 @@ const Bookingvisit1: React.FC = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
-    // Basic validation
-    if (!formData.firstName || !formData.petName || !formData.problem) {
-      alert("Please fill in all required fields.");
-      return;
+    try {
+      const response = await fetch("/api/bookingvisit1", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      // Check if the response has JSON content
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        const data = await response.json();
+        if (response.ok) {
+          alert(data.message);
+          router.push("/bookingvisit2"); // Navigate to the next step
+        } else {
+          alert(data.error || "Failed to submit the form.");
+        }
+      } else {
+        throw new Error("Unexpected response format.");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
-
-    // Navigate to Bookingvisit2
-    router.push({
-      pathname: "/bookingvisit2",
-      query: {
-        ...formData, // Pass form data as query parameters (optional)
-      },
-    });
   };
 
   return (
@@ -85,6 +103,7 @@ const Bookingvisit1: React.FC = () => {
             placeholder="Budi"
             value={formData.firstName}
             onChange={handleChange}
+            required
           />
         </div>
         <div className="form-group">
@@ -95,6 +114,7 @@ const Bookingvisit1: React.FC = () => {
             placeholder="Similikiwaw"
             value={formData.lastName}
             onChange={handleChange}
+            required
           />
         </div>
         <div className="form-group">
@@ -105,6 +125,7 @@ const Bookingvisit1: React.FC = () => {
             placeholder="077-1234567"
             value={formData.mobile}
             onChange={handleChange}
+            required
           />
         </div>
         <div className="form-group">
@@ -115,6 +136,7 @@ const Bookingvisit1: React.FC = () => {
             placeholder="similikiwaw@mail.com"
             value={formData.email}
             onChange={handleChange}
+            required
           />
         </div>
         <div className="form-group">
@@ -137,6 +159,7 @@ const Bookingvisit1: React.FC = () => {
             placeholder="Lucy"
             value={formData.petName}
             onChange={handleChange}
+            required
           />
         </div>
         <div className="form-group">
@@ -187,10 +210,15 @@ const Bookingvisit1: React.FC = () => {
             placeholder="Swollen in leg for 3 days"
             value={formData.problem}
             onChange={handleChange}
+            required
           />
         </div>
-        <button type="submit" className="continue-button">
-          Continue
+        <button
+          type="submit"
+          className="continue-button"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Submitting..." : "Continue"}
         </button>
       </form>
     </div>

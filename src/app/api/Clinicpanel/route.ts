@@ -1,7 +1,6 @@
-// /pages/api/Clinicpanel.ts
 import { NextRequest, NextResponse } from "next/server";
-import dbConnect from "../../../../Lib/db"; // MongoDB connection utility
-import Clinic from "../../../../Lib/Models/Addclinic"; // Clinic model
+import dbConnect from "./../../../../Lib/db"; // MongoDB connection utility
+import Clinic from "./../../../../Lib/Models/Addclinic"; // Clinic model
 
 export async function GET(req: NextRequest) {
   try {
