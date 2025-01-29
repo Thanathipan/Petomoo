@@ -1,9 +1,13 @@
-import React, { useState } from "react";
-import { useRouter } from "next/router"; // Use 'next/navigation' for App Router
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import "./Bookingvisit2.css";
 
-// Define the type for the selected date
 type SelectedDate = string | null;
+
+interface Clinic {
+  _id: string;
+  clinicName: string;
+}
 
 const Bookingvisit2: React.FC = () => {
   const router = useRouter();
@@ -26,6 +30,8 @@ const Bookingvisit2: React.FC = () => {
   const [currentMonth, setCurrentMonth] = useState<number>(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState<number>(new Date().getFullYear());
   const [selectedDate, setSelectedDate] = useState<SelectedDate>(null);
+  const [clinics, setClinics] = useState<Clinic[]>([]);
+  const [selectedClinic, setSelectedClinic] = useState<string>("");
 
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   const firstDay = new Date(currentYear, currentMonth, 1).getDay();
@@ -55,13 +61,29 @@ const Bookingvisit2: React.FC = () => {
   };
 
   const handleContinue = () => {
-    if (!selectedDate) {
-      alert("Please select a date before continuing.");
+    if (!selectedDate || !selectedClinic) {
+      alert("Please select a date and a clinic before continuing.");
       return;
     }
 
     router.push("/payment");
   };
+
+  // Fetch clinics from the backend
+  const fetchClinics = async () => {
+    try {
+      const response = await fetch("/api/Clinicpanel");
+      const data = await response.json();
+      setClinics(data);
+      setSelectedClinic(data[0]?._id || ""); // Set default clinic
+    } catch (error) {
+      console.error("Failed to fetch clinics:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchClinics();
+  }, []);
 
   return (
     <div className="form-container">
@@ -116,16 +138,22 @@ const Bookingvisit2: React.FC = () => {
           </div>
           <div className="form-group">
             <label htmlFor="clinic">Clinic</label>
-            <select id="clinic" defaultValue="Pawcare Barktown">
-              <option value="Pawcare Barktown">City clinic</option>
-              <option value="Clinic 2">Clinic 2</option>
+            <select
+              id="clinic"
+              value={selectedClinic}
+              onChange={(e) => setSelectedClinic(e.target.value)}
+            >
+              {clinics.map((clinic) => (
+                <option key={clinic._id} value={clinic._id}>
+                  {clinic.clinicName}
+                </option>
+              ))}
             </select>
           </div>
-          
         </div>
         <div className="right">
           <div className="pet-info">
-            <img src="dog.jpg" alt="Pet" className="pet-image" />
+            {/* <img src="dog.jpg" alt="Pet" className="pet-image" /> */}
             <h3>Lucy</h3>
             <p className="pet-breed">Golden Retriever</p>
           </div>

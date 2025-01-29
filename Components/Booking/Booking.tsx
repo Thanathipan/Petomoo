@@ -12,7 +12,7 @@ const Booking: React.FC = () => {
         <div className="hero-content">
           <h1>Visit us for expert pet care</h1>
           <p>Where compassion meets excellence!</p>
-          <a href="/Bookingvisit1" className="btn primary">
+          <a href="/bookingvisit1" className="btn primary">
             Book Visit
           </a>
         </div>
@@ -52,7 +52,7 @@ const Booking: React.FC = () => {
               stress-free atmosphere. Drop by today to find dedicated care right
               in the heart of the community.
             </p>
-            <a href="Bookingvisit1" className="btn primary">
+            <a href="bookingvisit1" className="btn primary">
               Book Visit
             </a>
           </div>

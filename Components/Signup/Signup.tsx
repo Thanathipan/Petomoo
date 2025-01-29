@@ -35,7 +35,7 @@ const Signup: React.FC = () => {
   
         // Redirect to profile page after successful signup
         localStorage.setItem('user', JSON.stringify(data)); // Store user data in localStorage
-        router.push('/Landingpage'); // Redirect to profile page
+        router.push('/landingpage2'); // Redirect to profile page
       } else {
         setErrorMessage(result.message);
       }
