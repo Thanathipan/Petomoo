@@ -1,13 +1,18 @@
-import mongoose, { Schema, Document } from "mongoose";
+import { Schema, model, models, Document } from "mongoose";
 
-export interface IClinic extends Document {
+interface IClinic extends Document {
   clinicName: string;
   location: string;
 }
 
-const ClinicSchema: Schema = new Schema({
-  clinicName: { type: String, required: true, unique: true },
-  location: { type: String, required: true },
-});
+const clinicSchema = new Schema<IClinic>(
+  {
+    clinicName: { type: String, required: true },
+    location: { type: String, required: true },
+  },
+  { timestamps: true }
+);
 
-export default mongoose.models.Clinic || mongoose.model<IClinic>("Clinic", ClinicSchema);
+const Clinic = models.Clinic || model<IClinic>("Clinic", clinicSchema);
+
+export default Clinic;

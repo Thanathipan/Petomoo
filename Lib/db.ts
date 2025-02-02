@@ -23,4 +23,4 @@ const dbConnect = async () => {
     throw new Error("MongoDB connection failed");
   }
 };
-export default dbConnect;
+export default dbConnect; 

@@ -1,40 +1,46 @@
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "../../../../Lib/db";
 import Clinic from "../../../../Lib/Models/Addclinic";
+import User from "../../../../Lib/Models/user";
+import bcrypt from "bcrypt";
 
 export async function POST(req: NextRequest) {
+  await dbConnect();
+
   try {
-    const { clinicName, location } = await req.json();
+    const { clinicName, location, firstName, lastName, email, phoneNumber, password } = await req.json();
 
-    if (!clinicName || !location) {
-      return NextResponse.json(
-        { message: "Clinic name and location are required." },
-        { status: 400 }
-      );
+    // Check if email or phone number already exists
+    if (await User.findOne({ email })) {
+      return NextResponse.json({ message: "Email already exists" }, { status: 400 });
+    }
+    if (await User.findOne({ phoneNumber })) {
+      return NextResponse.json({ message: "Phone number already exists" }, { status: 400 });
     }
 
-    await dbConnect();
+    // Create Clinic
+    const clinic = new Clinic({ clinicName, location });
+    await clinic.save();
 
-    const existingClinic = await Clinic.findOne({ clinicName });
-    if (existingClinic) {
-      return NextResponse.json(
-        { message: "Clinic name already exists." },
-        { status: 400 }
-      );
-    }
+    // Hash password before saving
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newClinic = new Clinic({ clinicName, location });
-    await newClinic.save();
+    // Create Clinic Admin
+    const clinicAdmin = new User({
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      role: "clinicadmin",
+      password: hashedPassword,
+      clinicId: clinic._id, // Link clinic admin to the newly created clinic
+    });
 
-    return NextResponse.json(
-      { message: "Clinic added successfully!", clinic: newClinic },
-      { status: 201 }
-    );
-  } catch (error: any) {
+    await clinicAdmin.save();
+
+    return NextResponse.json({ message: "Clinic and Clinic Admin added successfully!" }, { status: 201 });
+  } catch (error) {
     console.error("Error adding clinic:", error);
-    return NextResponse.json(
-      { message: "Something went wrong.", error: error.message },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 }
