@@ -33,10 +33,28 @@ const Login: React.FC = () => {
 
       if (response.ok) {
         setSuccessMessage(result.message);
+        const { user } = result;
 
-        // Store user data in localStorage and redirect to profile page
-        localStorage.setItem('user', JSON.stringify(result.user)); // Store user data
-        router.push('/landingpage2'); // Redirect to profile page
+        console.log("User role received:", user.role); // Debugging log
+
+        // Store user data in localStorage
+        localStorage.setItem('user', JSON.stringify(user));
+
+        // ✅ Redirect based on user role
+        switch (user.role) {
+          case 'user':
+            router.push('/landingpage2');
+            break;
+          case 'clinicadmin':
+            router.push('/dashboard/clinicadmin');
+            break;
+          case 'superadmin':
+            router.push('/dashboard/superadmin');
+            break;
+          default:
+            console.error("Invalid user role:", user.role);
+            setErrorMessage("Invalid user role. Please contact support.");
+        }
       } else {
         setErrorMessage(result.message);
       }

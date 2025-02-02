@@ -47,8 +47,10 @@ const AddClinic: React.FC = () => {
         body: JSON.stringify(data),
       });
 
+      const result = await response.json();
+      
       if (response.ok) {
-        setMessage("Clinic and Clinic Admin added successfully!");
+        setMessage(result.message);
         setClinicName("");
         setLocation("");
         setFirstName("");
@@ -56,10 +58,9 @@ const AddClinic: React.FC = () => {
         setEmail("");
         setPhoneNumber("");
         setPassword("");
-        await fetchClinics(); // Refresh the clinic list after adding
+        await fetchClinics();
       } else {
-        const errorData = await response.json();
-        setMessage(`Error: ${errorData.message}`);
+        setMessage(`Error: ${result.message}`);
       }
     } catch (error) {
       setMessage("An error occurred while adding the clinic.");
