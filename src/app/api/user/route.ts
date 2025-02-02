@@ -12,90 +12,91 @@ export async function POST(req: NextRequest) {
   const { firstName, lastName, email, password, phoneNumber } = await req.json();
 
   try {
-    // Connect to the database
     await dbConnect();
 
-    // Check if the email already exists in the database
     const existingUser = await userModel.findOne({ email });
     if (existingUser) {
       return NextResponse.json({ message: "Email already exists" }, { status: 400 });
     }
 
-    // Check if the phone number already exists in the database
     const existingPhoneNumber = await userModel.findOne({ phoneNumber });
     if (existingPhoneNumber) {
       return NextResponse.json({ message: "Phone number already exists" }, { status: 400 });
     }
 
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
+    const role = "user";
 
-    // Create a new user instance
     const newUser = new userModel({
       firstName,
       lastName,
       email,
       password: hashedPassword,
-      phoneNumber, // Add the phoneNumber here
+      phoneNumber,
+      role,
     });
 
-    // Save the new user to the database
     await newUser.save();
 
-    // Generate a JWT token
-    const token = jwt.sign(
-      { id: newUser._id, email: newUser.email },
-      JWT_SECRET,
-      { expiresIn: "1h" } // Token expiration (1 hour)
-    );
+    const token = jwt.sign({ id: newUser._id, email: newUser.email }, JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
-    const response =  NextResponse.json(
-      { message: "User registered successfully", token },
-      { status: 201 }
-    )
+    const response = NextResponse.json({ message: "User registered successfully", token }, { status: 201 });
 
     response.cookies.set("auth", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      maxAge: 15552000, // 1 hour
+      maxAge: 15552000,
       path: "/",
     });
 
-
-    // Send success response with the token
     return response;
   } catch (error) {
-    // Handle errors
     console.error(error);
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
-    return NextResponse.json(
-      { message: "Something went wrong", error: errorMessage },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: "Something went wrong", error: errorMessage }, { status: 500 });
   }
 }
 
 // Route for fetching all users
 export async function GET(req: NextRequest) {
   try {
-    // Connect to the database
     await dbConnect();
-
-    // Fetch all users (excluding password for security)
-    const users = await userModel.find({}, "-password"); // Exclude the password field
-
-    // Send response with user data
+    const users = await userModel.find({}, "-password");
     return NextResponse.json({ users }, { status: 200 });
   } catch (error) {
-    // Handle errors
     console.error(error);
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
-    return NextResponse.json(
-      { message: "Something went wrong", error: errorMessage },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: "Something went wrong", error: errorMessage }, { status: 500 });
   }
 }
 
+// Route for updating user details
+export async function PUT(req: NextRequest) {
+  try {
+    await dbConnect();
+    const { id, firstName, lastName, phoneNumber } = await req.json();
 
+    if (!id) {
+      return NextResponse.json({ message: "User ID is required" }, { status: 400 });
+    }
+
+    const updatedUser = await userModel.findByIdAndUpdate(
+      id,
+      { firstName, lastName, phoneNumber },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedUser) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ message: "User updated successfully", user: updatedUser }, { status: 200 });
+  } catch (error) {
+    console.error(error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    return NextResponse.json({ message: "Something went wrong", error: errorMessage }, { status: 500 });
+  }
+}
