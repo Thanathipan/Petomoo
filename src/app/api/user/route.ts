@@ -100,3 +100,26 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ message: "Something went wrong", error: errorMessage }, { status: 500 });
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    await dbConnect();
+    const { id } = await req.json();
+
+    if (!id) {
+      return NextResponse.json({ message: "User ID is required" }, { status: 400 });
+    }
+
+    const deletedUser = await userModel.findByIdAndDelete(id);
+
+    if (!deletedUser) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ message: "User deleted successfully" }, { status: 200 });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    return NextResponse.json({ message: "Something went wrong", error: errorMessage }, { status: 500 });
+  }
+}

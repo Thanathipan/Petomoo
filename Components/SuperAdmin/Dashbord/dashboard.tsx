@@ -9,20 +9,23 @@ import "./dashboard.css"; // Ensure the CSS file exists
 import Users from "../User/user";
 import Bookings from "../booking/booking";
 import Payments from "../Payment/payment";
-import Addclinic from "../Addclinic/Addclinic";
+import Addclinic from "../clinic/clinic";
+import Profile from "../Profile/Profile";
 
 
 
 const Dashboard: React.FC = () => {
   const router = useRouter();
   const [activePanel, setActivePanel] = useState('Users');
-  const buttons = ['Addclinic','Users', 'Bookings', 'Payments'];
+  const buttons = ['Addclinic','Users', 'Bookings', 'Payments',"Profile"];
 
   const panelComponents: Record<string, JSX.Element> = {
     Users: <Users />,
     Addclinic: <Addclinic />,
     Bookings: <Bookings />,
     Payments: <Payments />,
+    Profile: <Profile />,
+
   };
 
   const onPanelClick = (panel: string) => {

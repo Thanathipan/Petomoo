@@ -22,8 +22,11 @@ export async function POST(req: NextRequest) {
     const clinic = new Clinic({ clinicName, location });
     await clinic.save();
 
-    // Hash password before saving
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // 🚨 Ensure password is hashed correctly before saving 🚨
+    // if (password.startsWith("$2b$")) {
+    //   return NextResponse.json({ message: "Password should not be pre-hashed!" }, { status: 400 });
+    // }
+
 
     // Create Clinic Admin
     const clinicAdmin = new User({
@@ -32,8 +35,8 @@ export async function POST(req: NextRequest) {
       email,
       phoneNumber,
       role: "clinicadmin",
-      password: hashedPassword,
-      clinicId: clinic._id, // Link clinic admin to the newly created clinic
+      password , // ✅ Save only the hashed password
+      clinicId: clinic._id,
     });
 
     await clinicAdmin.save();

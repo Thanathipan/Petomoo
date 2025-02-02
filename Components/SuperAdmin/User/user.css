@@ -7,14 +7,7 @@ body {
   height: 100vh;
 }
 
-.navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #f5f0fa;
-  padding: 15px 20px;
-  border-bottom: 1px solid #ddd;
-}
+
 
 .navbar .logo img {
   border-radius: 50%;
@@ -37,11 +30,7 @@ body {
   font-weight: bold;
 }
 
-.navbar input[type="search"] {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
+
 
 .content-area {
   padding: 20px;
@@ -59,10 +48,13 @@ body {
 }
 
 .user-cards-container {
-  display: grid;
+  display:grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
   padding: 0 20px;
+  padding-top: 20px;
+  margin-top: 1100px;
+  overflow: hidden;
 }
 
 .user-card {
