@@ -162,6 +162,7 @@ const AddClinic: React.FC = () => {
 
   return (
     <div className="add-clinic-container">
+      <div>
       <h1>{clinicId ? "Edit Clinic" : "Add Clinic"}</h1>
       <form onSubmit={clinicId ? handleUpdate : handleSubmit}>
         <input type="text" placeholder="Clinic Name" value={clinicName} onChange={(e) => setClinicName(e.target.value)} required />
@@ -177,20 +178,22 @@ const AddClinic: React.FC = () => {
       </form>
 
       {message && <p>{message}</p>}
-
-      <h2>Clinics</h2>
-      <ul>
-        {clinics.map((clinic) => (
-          <li key={clinic.clinicId}>
-            <strong>{clinic.clinicName}</strong> - {clinic.location} 
-            <br />
-            Admin: {clinic.admin ? `${clinic.admin.firstName} ${clinic.admin.lastName} (${clinic.admin.email})` : "No Admin Assigned"}
-            <br />
-            <button onClick={() => handleEdit(clinic)}>Edit</button>
-            <button onClick={() => handleDelete(clinic.clinicId)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+      <div className="admindetails">
+      </div>
+        <h2>Clinics</h2>
+        <ul>
+          {clinics.map((clinic) => (
+            <li key={clinic.clinicId}>
+              <strong>{clinic.clinicName}</strong> - {clinic.location}
+              <br />
+              Admin: {clinic.admin ? `${clinic.admin.firstName} ${clinic.admin.lastName} (${clinic.admin.email})` : "No Admin Assigned"}
+              <br />
+              <button onClick={() => handleEdit(clinic)}>Edit</button>
+              <button onClick={() => handleDelete(clinic.clinicId)}>Delete</button>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };

@@ -5,7 +5,7 @@ import dbConnect from "../../../../Lib/db";
 import userModel from "../../../../Lib/Models/user";
 
 // Load environment variables
-const JWT_SECRET = process.env.JWT_SECRET || "default_secret_key";
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // Route for user registration
 export async function POST(req: NextRequest) {
@@ -24,21 +24,20 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "Phone number already exists" }, { status: 400 });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
     const role = "user";
 
     const newUser = new userModel({
       firstName,
       lastName,
       email,
-      password: hashedPassword,
+      password,
       phoneNumber,
       role,
     });
 
     await newUser.save();
 
-    const token = jwt.sign({ id: newUser._id, email: newUser.email }, JWT_SECRET, {
+    const token = jwt.sign({ id: newUser._id, email: newUser.email }, JWT_SECRET!, {
       expiresIn: "1h",
     });
 

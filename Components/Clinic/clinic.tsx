@@ -2,7 +2,7 @@ import React from "react";
 import "./clinic.css";
 import Image from 'next/image';
 
-import image from "../../public/images/pexels-tima-miroshnichenko-6235111.jpg";
+import image from "../../public/images/240_FQ.jpg";
 
 const Clinic: React.FC = () => {
   return (

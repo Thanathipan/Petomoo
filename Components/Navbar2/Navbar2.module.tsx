@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Logo from '../../public/images/logo.png';
 import './Navbar2.css';
-// import icon from '../../public/images/icons8-user-100.png'
+import icon from '../../public/images/icons8-user-100.png'
 const Navbar: React.FC = () => {
   return (
     <nav className="navbar">
@@ -22,7 +22,7 @@ const Navbar: React.FC = () => {
           <Link href="/clinic">Clinic</Link>
         </li>
         <a href="Profile">
-          <Image src="/public/images/Contactimg.jpg" alt="User Icon" width={50} height={50} />
+          <Image src= {icon} alt="User Icon" width={50} height={50} />
         </a>
         
       </ul>

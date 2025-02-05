@@ -1,64 +1,55 @@
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "../../../../Lib/db";
-import userModel from "../../../../Lib/Models/user";
+import User from "../../../../Lib/Models/user";
 
-// Get all users (Super Admin only)
+// Fetch Super Admin details
 export async function GET(req: NextRequest) {
   try {
     await dbConnect();
-    const users = await userModel.find({}, "-password"); // Exclude passwords
-    return NextResponse.json({ users }, { status: 200 });
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({ message: "Failed to fetch users" }, { status: 500 });
-  }
-}
-
-// Delete a user (Super Admin only)
-export async function DELETE(req: NextRequest) {
-  try {
-    await dbConnect();
-    const { id } = await req.json();
+    
+    const url = new URL(req.url);
+    const id = url.searchParams.get("id");
 
     if (!id) {
-      return NextResponse.json({ message: "User ID is required" }, { status: 400 });
+      return NextResponse.json({ message: "Super Admin ID is required" }, { status: 400 });
     }
 
-    const deletedUser = await userModel.findByIdAndDelete(id);
-    if (!deletedUser) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    const superAdmin = await User.findById(id).select("-password"); // Exclude password
+
+    if (!superAdmin) {
+      return NextResponse.json({ message: "Super Admin not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ message: "User deleted successfully" }, { status: 200 });
+    return NextResponse.json({ user: superAdmin }, { status: 200 });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ message: "Failed to delete user" }, { status: 500 });
+    return NextResponse.json({ message: "Failed to fetch Super Admin details" }, { status: 500 });
   }
 }
 
-// Update user details (Super Admin only)
+// Update Super Admin details
 export async function PUT(req: NextRequest) {
   try {
     await dbConnect();
-    const { id, firstName, lastName, role } = await req.json();
+    const { id, firstName, lastName, phoneNumber } = await req.json();
 
     if (!id) {
-      return NextResponse.json({ message: "User ID is required" }, { status: 400 });
+      return NextResponse.json({ message: "Super Admin ID is required" }, { status: 400 });
     }
 
-    const updatedUser = await userModel.findByIdAndUpdate(
+    const updatedSuperAdmin = await User.findByIdAndUpdate(
       id,
-      { firstName, lastName, role },
+      { firstName, lastName, phoneNumber },
       { new: true, runValidators: true }
-    );
+    ).select("-password");
 
-    if (!updatedUser) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    if (!updatedSuperAdmin) {
+      return NextResponse.json({ message: "Super Admin not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ message: "User updated successfully", user: updatedUser }, { status: 200 });
+    return NextResponse.json({ message: "Profile updated successfully", user: updatedSuperAdmin }, { status: 200 });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ message: "Failed to update user" }, { status: 500 });
+    return NextResponse.json({ message: "Failed to update profile" }, { status: 500 });
   }
 }

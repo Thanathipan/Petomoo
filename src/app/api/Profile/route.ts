@@ -2,20 +2,34 @@ import { NextRequest, NextResponse } from "next/server";
 import connectToDatabase from "../../../../Lib/db";
 import User from "../../../../Lib/Models/user";
 
-// Handle GET requests (Fetch all users)
-export const GET = async () => {
+
+
+// Handle GET request (Fetch user details by ID)
+export const GET = async (req: NextRequest) => {
   try {
     await connectToDatabase();
-    const users = await User.find();
-    return NextResponse.json(users, { status: 200 });
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+
+    if (!id) {
+      return NextResponse.json({ error: "User ID is required" }, { status: 400 });
+    }
+
+    const user = await User.findById(id).select("-password"); // Exclude password
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(user, { status: 200 });
   } catch (error: any) {
-    console.error("Error fetching users:", error.message);
+    console.error("Error fetching user:", error.message);
     return NextResponse.json(
-      { message: "Failed to fetch users.", error: error.message },
+      { message: "Failed to fetch user.", error: error.message },
       { status: 500 }
     );
   }
 };
+
 
 // Handle POST requests (Add a new user)
 export const POST = async (req: NextRequest) => {
@@ -112,3 +126,4 @@ export const DELETE = async (req: NextRequest) => {
     );
   }
 };
+// Corrected GET request to fetch a single user

@@ -1,10 +1,10 @@
 import React from 'react';
-import Bookingvisit2 from '../../../Components/Bookingvisit2/Bookingvisit2';
+import Bookingvisit1 from '../../../Components/Bookingvisit/Bookingvisit';
 
 const App: React.FC = () => {
     return (
         <>
-            <Bookingvisit2 />
+            <Bookingvisit1 />
 
         </>
     );

@@ -31,14 +31,14 @@ const Login: React.FC = () => {
 
       const result = await response.json();
 
-      if (response.ok) {
+      if (response.status === 200) {
         setSuccessMessage(result.message);
         const { user } = result;
 
         console.log("User role received:", user.role); // Debugging log
 
-        // Store user data in localStorage
-        localStorage.setItem('user', JSON.stringify(user));
+        // // Store user data in localStorage
+        // localStorage.setItem('user', JSON.stringify(user));
 
         // ✅ Redirect based on user role
         switch (user.role) {
@@ -62,6 +62,7 @@ const Login: React.FC = () => {
       setErrorMessage('Something went wrong. Please try again.');
     }
   };
+  
 
   return (
     <section>

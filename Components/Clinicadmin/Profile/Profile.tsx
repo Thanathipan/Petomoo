@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styles from "./Profile.module.css";
-import Profile from'../../../public/images/pexels-tima-miroshnichenko-6235661.jpg';
+import Profile from'../../../public/images/Benefits1.jpg';
+import axios from "axios";
 
 const profile = () => {
   const router = useRouter();
@@ -22,30 +23,51 @@ const profile = () => {
     phoneNumber: false,
   });
   const [isModified, setIsModified] = useState(false);
+  const [id, setId] = useState("");
+
+  // useEffect(() => {
+  //   const user = localStorage.getItem("user");
+
+  //   if (!user || user === "undefined" || user === "null") {
+  //     router.push("/Profile"); // Redirect to login if not authenticated or invalid data
+  //   } else {
+  //     try {
+  //       const parsedUser = JSON.parse(user);
+
+  //       if (!parsedUser._id) {
+  //         console.warn("User ID is missing. Redirecting to login.");
+  //         localStorage.removeItem("user"); // Clear corrupted data
+  //         router.push("/login");
+  //         return;
+  //       }
+
+  //       setUserData(parsedUser);
+  //     } catch (error) {
+  //       console.error("Error parsing user data:", error);
+  //       localStorage.removeItem("user"); // Clear corrupted data
+  //       router.push("/login");
+  //     }
+  //   }
+  // }, [router]);
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
-
-    if (!user || user === "undefined" || user === "null") {
-      router.push("/login"); // Redirect to login if not authenticated or invalid data
-    } else {
+    const fetchUser = async () => {
       try {
-        const parsedUser = JSON.parse(user);
+        const response = await axios.get('/api/cookie');
+        setId(response.data.user.id);
 
-        if (!parsedUser._id) {
-          console.warn("User ID is missing. Redirecting to login.");
-          localStorage.removeItem("user"); // Clear corrupted data
+        if (!response.data.user) {
           router.push("/login");
-          return;
         }
 
-        setUserData(parsedUser);
+        const user = await axios.get(`/api/Profile?id=${response.data.user.id}`);
+        setUserData(user.data);
       } catch (error) {
-        console.error("Error parsing user data:", error);
-        localStorage.removeItem("user"); // Clear corrupted data
-        router.push("/login");
+        
       }
-    }
+    };
+
+    fetchUser();
   }, [router]);
 
   const handleEditClick = (field: string) => {
@@ -129,10 +151,23 @@ const profile = () => {
     });
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("user"); // Clear user data from localStorage
-    router.push("/login"); // Redirect to login page
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("/api/logout", {
+        method: "GET",
+      });
+  
+      if (response.ok) {
+        localStorage.removeItem("user"); // Clear localStorage
+        router.push("/login"); // Redirect to login
+      } else {
+        toast.error("Logout failed. Please try again.");
+      }
+    } catch (error) {
+      toast.error("An error occurred while logging out.");
+    }
   };
+  
 
   return (
     <div className={styles.profileContainer}>

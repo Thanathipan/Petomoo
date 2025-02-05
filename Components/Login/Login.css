@@ -9,7 +9,7 @@ section {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    font-family: 'Poppins', sans-serif; /* Corrected font-family declaration */
+    font-family: 'Poppins';
 }
 
 .login-container {
