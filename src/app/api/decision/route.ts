@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import mongoose from "mongoose";
-import Booking from "../../../../../Lib/Models/Booking"; // Adjust the import path as needed
-import dbConnect from "../../../../../Lib/db"; // Your database connection file
+import Booking from "../../../../Lib/Models/Booking"; // Ensure the correct path
+import dbConnect from "../../../../Lib/db"; // Your database connection file
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   await dbConnect(); // Connect to MongoDB
@@ -13,14 +13,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const { bookingId, status } = req.body;
 
+    // Validate the booking ID
     if (!mongoose.Types.ObjectId.isValid(bookingId)) {
       return res.status(400).json({ message: "Invalid booking ID" });
     }
 
+    // Validate the status value
     if (!["accepted", "declined"].includes(status)) {
       return res.status(400).json({ message: "Invalid status value" });
     }
 
+    // Find the booking
     const booking = await Booking.findById(bookingId);
 
     if (!booking) {
@@ -31,7 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ message: "Booking already processed" });
     }
 
-    // Update the status
+    // Update the booking status
     booking.status = status;
     await booking.save();
 

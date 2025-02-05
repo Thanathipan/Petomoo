@@ -13,6 +13,7 @@ export interface IBookingVisit extends Document {
   age: string;
   illnessPeriod: string;
   problem: string;
+  status: "pending" | "accepted" | "declined";
   createdAt: Date;
 }
 
@@ -29,11 +30,10 @@ const BookingVisitSchema: Schema = new Schema<IBookingVisit>({
   age: { type: String, required: false },
   illnessPeriod: { type: String, required: true },
   problem: { type: String, required: true },
+  status: { type: String, enum: ["pending", "accepted", "declined"], default: "pending" },
   createdAt: { type: Date, default: Date.now },
 });
 
 // Export the model
 export default mongoose.models.BookingVisit ||
   mongoose.model<IBookingVisit>("BookingVisit", BookingVisitSchema);
-
-  

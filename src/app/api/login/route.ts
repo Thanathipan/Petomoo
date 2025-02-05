@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import dbConnect from "../../../../Lib/db"; // Ensure DB connection
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import User from "../../../../Lib/Models/user"; // Import User model
+
+const JWT_SECRET = process.env.JWT_SECRET; // Define JWT_SECRET
 
 export async function POST(req: Request) {
   try {
@@ -31,10 +34,21 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Incorrect password" }, { status: 401 });
     }
 
-    return NextResponse.json(
-      { message: "Login successful", user: { email: user.email, role: user.role } },
-      { status: 200 }
-    );
+    const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET!, {
+      expiresIn: "1h",
+    });
+
+    const response = NextResponse.json({ message: "Logged in successful", token, user: { email: user.email, role: user.role }  }, { status: 200 });
+
+    response.cookies.set("auth", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 15552000,
+      path: "/",
+    });
+
+    return response;
   } catch (error) {
     console.error("Login error:", error);
     return NextResponse.json({ message: "Server error, please try again later" }, { status: 500 });

@@ -8,8 +8,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Payment from "../Payment/payment";
 import Bookings from "../booking/booking"; 
-import Profile from "../Profile/Profile"; 
-
+import Profile from "../Profile/Profile";
 
 
 const Orders: React.FC = () => {
@@ -20,7 +19,7 @@ const Orders: React.FC = () => {
   const panelComponents: Record<string, JSX.Element> = {
     Payments: <Payment />,
     Booking: <Bookings />,
-    Profile1: <Profile />,
+    Profile: <Profile />,
 
 
   };

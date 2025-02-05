@@ -4,7 +4,7 @@ body, html {
     margin: 0;
     background-color: rgb(255, 255, 255);
     color: rgb(34, 149, 178);
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins';
     box-sizing: border-box; /*Universal box-sizing for consistency*/
 }
 
@@ -160,7 +160,7 @@ body, html {
     cursor: pointer;
     width: 10%;
     max-width: 250px;
-    font-family: 'Helvetica Neue';
+    font-family: 'poppins';
     font-size:17PX;
 }
 
