@@ -1,13 +1,13 @@
 import React from 'react';
 import Navbar from '../../../Components/Navbar/Navbar';
-import Booking from '../../../Components/Booking/Booking';
+import Consultation from '../../../Components/Consultation/Consultation';
 import Footer from '../../../Components/Footer/Footer';
 
 const App: React.FC = () => {
     return (
         <>
             <Navbar />
-            <Booking />
+            <Consultation />
             <Footer />
 
         </>

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "../../../../Lib/db";
-import BookingVisit from "../../../../Lib/Models/Bookingvisit";
+import Booking from "../../../../Lib/Models/Booking";
+import Clinic from "../../../../Lib/Models/Addclinic"; // Assuming you have a Clinic model
 
 export async function POST(req: Request) {
   try {
@@ -22,18 +23,41 @@ export async function POST(req: Request) {
       age,
       illnessPeriod,
       problem,
+      selectedDate,
+      selectedTime,
+      selectedClinic,
     } = body;
 
     // Validate required fields
-    if (!firstName || !lastName || !mobile || !email || !petName || !type || !problem) {
+    if (
+      !firstName ||
+      !lastName ||
+      !mobile ||
+      !email ||
+      !petName ||
+      !type ||
+      !problem ||
+      !selectedDate ||
+      !selectedTime ||
+      !selectedClinic
+    ) {
       return NextResponse.json(
         { error: "Please fill in all required fields." },
         { status: 400 }
       );
     }
 
+    // Fetch the clinic name
+    const clinic = await Clinic.findById(selectedClinic);
+    if (!clinic) {
+      return NextResponse.json(
+        { error: "Invalid clinic selected." },
+        { status: 400 }
+      );
+    }
+
     // Create a new booking record in the database
-    const booking = await BookingVisit.create({
+    const booking = await Booking.create({
       firstName,
       lastName,
       mobile,
@@ -45,6 +69,10 @@ export async function POST(req: Request) {
       age,
       illnessPeriod,
       problem,
+      selectedDate,
+      selectedTime,
+      selectedClinic,
+      clinicName: clinic.clinicName, // Save clinic name as well
     });
 
     // Respond with a success message
