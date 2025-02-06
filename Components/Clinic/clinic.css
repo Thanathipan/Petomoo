@@ -1,9 +1,9 @@
 /* Hero Section */
 .clinic-hero {
-  background-image: url(../../public/images//pexels-tima-miroshnichenko-6235111.jpg);
+  background-image: url(../../public/images/pexels-wildlittlethingsphoto-3292065.jpg);
   background-size: cover;
   /* Replace with your hero image */
-  height: 80vh;
+  height: 110vh;
   width: 100%;
 
   display: flex;

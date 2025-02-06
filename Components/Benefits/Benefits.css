@@ -38,12 +38,13 @@
     text-align: center;
     width: 500px;
     /* height: 600px; */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
 }
 
 .card img {
-    width: 100%;
+    width: 95%;
     border-radius: 10px;
+    height: 530px;
 }
 
 h2{
@@ -54,4 +55,8 @@ h3{
     font-size: 1.2rem;
     font-weight: bold;
 
+}
+Image{
+    width: 500px;
+    height: 200px;
 }

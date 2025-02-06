@@ -3,13 +3,15 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 60px);
+  height: calc(100vh );
   padding: 20px;
   /* background-image: url(../../public/assets/signup.jpg); */
   background-size: cover; 
   background-repeat: no-repeat;
   background-position: center;
   font-family: 'Poppins';
+  background-image: url('../../public/images/andrew-s-ouo1hbizWwo-unsplash.jpg'); 
+
 }
 
 .signup-container {
