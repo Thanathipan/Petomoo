@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 interface Booking {
@@ -12,15 +13,23 @@ interface Booking {
 
 const ClinicAdminPage: React.FC = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [updating, setUpdating] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await fetch("/api/booking/admin");
-        const data = await response.json();
-        setBookings(data);
+        const userResponse = await axios.get('/api/cookie');
+        if (userResponse.status === 200 && userResponse.data?.user?.id) {
+          const { id } = userResponse.data.user;
+          const bookingsResponse = await axios.post('/api/booking/getbyclinicid', { userId: id });
+          setBookings(bookingsResponse.data.bookings);
+        }
       } catch (error) {
-        console.error("Error fetching bookings:", error);
+        setError("Error fetching bookings.");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -28,16 +37,11 @@ const ClinicAdminPage: React.FC = () => {
   }, []);
 
   const handleStatusChange = async (bookingId: string, status: "accepted" | "declined") => {
+    setUpdating(bookingId);
     try {
-      const response = await fetch(`/api/booking/status`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ bookingId, status }),
-      });
+      const response = await axios.put("/api/booking/status", { bookingId, status });
 
-      if (response.ok) {
+      if (response.status === 200) {
         setBookings((prev) =>
           prev.map((booking) =>
             booking._id === bookingId ? { ...booking, status } : booking
@@ -45,44 +49,65 @@ const ClinicAdminPage: React.FC = () => {
         );
       }
     } catch (error) {
-      console.error("Error updating booking status:", error);
+      setError("Error updating booking status.");
+    } finally {
+      setUpdating(null);
     }
   };
 
   return (
     <div className="admin-page">
       <h1>Clinic Admin Page</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Pet Name</th>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {bookings.map((booking) => (
-            <tr key={booking._id}>
-              <td>{`${booking.firstName} ${booking.lastName}`}</td>
-              <td>{booking.petName}</td>
-              <td>{booking.selectedDate}</td>
-              <td>{booking.selectedTime}</td>
-              <td>{booking.status}</td>
-              <td>
-                {booking.status === "pending" && (
-                  <>
-                    <button onClick={() => handleStatusChange(booking._id, "accepted")}>Accept</button>
-                    <button onClick={() => handleStatusChange(booking._id, "declined")}>Decline</button>
-                  </>
-                )}
-              </td>
+
+      {loading ? (
+        <p>Loading bookings...</p>
+      ) : error ? (
+        <p style={{ color: "red" }}>{error}</p>
+      ) : bookings.length === 0 ? (
+        <p>No bookings found.</p>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Pet Name</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Status</th>
+              <th>Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {bookings.map((booking) => (
+              <tr key={booking._id}>
+                <td>{`${booking.firstName} ${booking.lastName}`}</td>
+                <td>{booking.petName}</td>
+                <td>{booking.selectedDate}</td>
+                <td>{booking.selectedTime}</td>
+                <td>{booking.status}</td>
+                <td>
+                  {booking.status === "pending" && (
+                    <>
+                      <button 
+                        onClick={() => handleStatusChange(booking._id, "accepted")}
+                        disabled={updating === booking._id}
+                      >
+                        {updating === booking._id ? "Updating..." : "Accept"}
+                      </button>
+                      <button 
+                        onClick={() => handleStatusChange(booking._id, "declined")}
+                        disabled={updating === booking._id}
+                      >
+                        {updating === booking._id ? "Updating..." : "Decline"}
+                      </button>
+                    </>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };

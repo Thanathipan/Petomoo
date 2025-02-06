@@ -13,7 +13,7 @@ import Profile from "../Profile/Profile";
 
 const Orders: React.FC = () => {
   const router = useRouter();
-  const [activePanel, setActivePanel] = useState('Users');
+  const [activePanel, setActivePanel] = useState('Profile');
   const buttons = [ 'Payment', 'Booking',"Profile"];
 
   const panelComponents: Record<string, JSX.Element> = {

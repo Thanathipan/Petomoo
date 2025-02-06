@@ -16,7 +16,7 @@ import Profile from "../Profile/Profile";
 
 const Dashboard: React.FC = () => {
   const router = useRouter();
-  const [activePanel, setActivePanel] = useState('Users');
+  const [activePanel, setActivePanel] = useState('Profile');
   const buttons = ['Addclinic','Users', 'Bookings', 'Payments',"Profile"];
 
   const panelComponents: Record<string, JSX.Element> = {

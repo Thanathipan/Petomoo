@@ -54,21 +54,30 @@ const profile = () => {
     const fetchUser = async () => {
       try {
         const response = await axios.get('/api/cookie');
-        setId(response.data.user.id);
-
+  
         if (!response.data.user) {
           router.push("/login");
+          return;
         }
-
+  
         const user = await axios.get(`/api/Profile?id=${response.data.user.id}`);
+  
+        // Check if the user is a clinic admin
+        if (user.data.role !== "clinicadmin") {
+          router.push("/login"); // Redirect non-clinic-admin users
+          return;
+        }
+  
         setUserData(user.data);
       } catch (error) {
-        
+        console.error("Error fetching user:", error);
+        router.push("/login");
       }
     };
-
+  
     fetchUser();
   }, [router]);
+  
 
   const handleEditClick = (field: string) => {
     setIsEditing((prevState) => ({
@@ -102,7 +111,7 @@ const profile = () => {
         }
 
         const updatedUser = await response.json();
-        localStorage.setItem("user", JSON.stringify(updatedUser.updatedUser)); // Save updated data
+        localStorage.setItem("clinicadmin", JSON.stringify(updatedUser.updatedUser)); // Save updated data
         setUserData(updatedUser.updatedUser);
 
         toast.success("profile updated successfully!", {
