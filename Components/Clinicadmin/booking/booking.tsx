@@ -4,46 +4,87 @@ interface Booking {
   _id: string;
   firstName: string;
   lastName: string;
-  mobile: string;
-  email: string;
   petName: string;
-  problem: string;
-  status: string;
+  selectedDate: string;
+  selectedTime: string;
+  status: "pending" | "accepted" | "declined";
 }
 
-const AdminBookings: React.FC = () => {
+const ClinicAdminPage: React.FC = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
 
   useEffect(() => {
-    fetch("/api/bookings")
-      .then((res) => res.json())
-      .then(setBookings)
-      .catch((error) => console.error("Error fetching bookings:", error));
+    const fetchBookings = async () => {
+      try {
+        const response = await fetch("/api/booking/admin");
+        const data = await response.json();
+        setBookings(data);
+      } catch (error) {
+        console.error("Error fetching bookings:", error);
+      }
+    };
+
+    fetchBookings();
   }, []);
 
-  const updateBookingStatus = (bookingId: string, status: "accepted" | "declined") => {
-    fetch("/api/bookings", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ bookingId, status }),
-    })
-      .then((res) => res.json())
-      .then(() => setBookings((prev) => prev.filter((b) => b._id !== bookingId)))
-      .catch((error) => console.error("Error updating booking:", error));
+  const handleStatusChange = async (bookingId: string, status: "accepted" | "declined") => {
+    try {
+      const response = await fetch(`/api/booking/status`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ bookingId, status }),
+      });
+
+      if (response.ok) {
+        setBookings((prev) =>
+          prev.map((booking) =>
+            booking._id === bookingId ? { ...booking, status } : booking
+          )
+        );
+      }
+    } catch (error) {
+      console.error("Error updating booking status:", error);
+    }
   };
 
   return (
-    <div>
-      <h1>Pending Bookings</h1>
-      {bookings.map((booking) => (
-        <div key={booking._id}>
-          <p>{booking.firstName} {booking.lastName} - {booking.petName} - {booking.problem}</p>
-          <button onClick={() => updateBookingStatus(booking._id, "accepted")}>Accept</button>
-          <button onClick={() => updateBookingStatus(booking._id, "declined")}>Decline</button>
-        </div>
-      ))}
+    <div className="admin-page">
+      <h1>Clinic Admin Page</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Pet Name</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {bookings.map((booking) => (
+            <tr key={booking._id}>
+              <td>{`${booking.firstName} ${booking.lastName}`}</td>
+              <td>{booking.petName}</td>
+              <td>{booking.selectedDate}</td>
+              <td>{booking.selectedTime}</td>
+              <td>{booking.status}</td>
+              <td>
+                {booking.status === "pending" && (
+                  <>
+                    <button onClick={() => handleStatusChange(booking._id, "accepted")}>Accept</button>
+                    <button onClick={() => handleStatusChange(booking._id, "declined")}>Decline</button>
+                  </>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
 
-export default AdminBookings;
+export default ClinicAdminPage;
