@@ -35,7 +35,7 @@ th, td {
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  color: black;
+  color: rgba(102, 45, 45, 0.527);
   border-radius: 10px;
   background-color: aqua;
 }

@@ -85,41 +85,57 @@ const AddClinic: React.FC = () => {
     console.log("Editing clinic:", clinic);
     console.log("clinicId:", clinic.clinicId, "adminId:", clinic.admin?._id);
   };
-
   const handleUpdate = async () => {
     if (!clinicId || !adminId) {
       setMessage("Select a clinic to edit.");
       console.log("clinicId or adminId is null", { clinicId, adminId });
       return;
     }
-
+  
     setLoading(true);
     setMessage("");
-
-    const data: any = { clinicId, clinicName, location, adminId, firstName, lastName, email, phoneNumber };
-    if (password) data.password = password;
-
+  
+    // Define the data structure explicitly
+    const data: {
+      clinicId: string;
+      clinicName: string;
+      location: string;
+      adminId: string;
+      firstName: string;
+      lastName: string;
+      email: string;
+      phoneNumber: string;
+      password?: string; // Optional field
+    } = { clinicId, clinicName, location, adminId, firstName, lastName, email, phoneNumber };
+  
+    // Add password only if it's provided
+    if (password.trim()) {
+      data.password = password;
+    }
+  
     try {
       const response = await fetch("/api/editclinic", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-
-      if (response.ok) {
-        setMessage("Clinic and Admin updated successfully!");
-        resetForm();
-        fetchClinics();
-      } else {
+  
+      if (!response.ok) {
         const errorData = await response.json();
-        setMessage(`Error: ${errorData.message}`);
+        throw new Error(errorData.message || "Failed to update clinic");
       }
+  
+      setMessage("Clinic and Admin updated successfully!");
+      resetForm();
+      fetchClinics();
     } catch (error) {
-      setMessage("An error occurred while updating the clinic.");
+      console.error("Error updating clinic:", error);
+      setMessage(`An error occurred: ${error instanceof Error ? error.message : "Unknown error"}`);
     } finally {
       setLoading(false);
     }
   };
+  
 
   const handleDelete = async (clinicId: string) => {
     if (!window.confirm("Are you sure you want to delete this clinic?")) return;

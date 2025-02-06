@@ -55,20 +55,27 @@ const profile = () => {
       try {
         const response = await axios.get('/api/cookie');
         setId(response.data.user.id);
-
+  
         if (!response.data.user) {
           router.push("/login");
+          return;
         }
-
+  
         const user = await axios.get(`/api/Profile?id=${response.data.user.id}`);
         setUserData(user.data);
+  
+        // Redirect users and clinic admins away from the superadmin profile
+        if (user.data.role !== "superadmin") {
+          router.push("/login"); // Redirect them to a common dashboard
+        }
       } catch (error) {
-        
+        console.error("Error fetching user:", error);
       }
     };
-
+  
     fetchUser();
   }, [router]);
+  
 
   const handleEditClick = (field: string) => {
     setIsEditing((prevState) => ({

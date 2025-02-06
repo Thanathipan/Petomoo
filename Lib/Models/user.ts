@@ -20,7 +20,7 @@ const userSchema = new Schema<IUser>(
     password: { type: String, required: true, minlength: 6 },
     phoneNumber: { type: String, required: true, unique: true },
     role: { type: String, required: true, enum: ["user", "clinicadmin", "superadmin"], default: "user" },
-    clinicId: { type: Schema.Types.ObjectId, ref: "Clinic", required: function () { return this.role === "clinicadmin"; } }
+    clinicId: { type: Schema.Types.ObjectId, ref: "Clinic", required: function (this: IUser) { return this.role === "clinicadmin"; } }
   },
   { timestamps: true }
 );
