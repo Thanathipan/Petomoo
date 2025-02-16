@@ -80,12 +80,16 @@ const profile = () => {
   const handleLogout = async () => {
     try {
       const response = await fetch("/api/logout", {
-        method: "GET",
+        method: "POST", // Ensure it's a POST request
       });
   
       if (response.ok) {
-        localStorage.removeItem("user"); // Clear localStorage
-        router.push("/login"); // Redirect to login
+        localStorage.removeItem("user"); // Clear local storage
+        toast.success("Logout successful!", { theme: "dark" }); // Show success toast
+  
+        setTimeout(() => {
+          router.push("/login"); // Redirect to login after toast
+        }, 2000); // Delay redirection slightly so the user sees the toast
       } else {
         toast.error("Logout failed. Please try again.");
       }
@@ -93,6 +97,8 @@ const profile = () => {
       toast.error("An error occurred while logging out.");
     }
   };
+  
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
     setUserData((prevState) => ({
       ...prevState,

@@ -1,4 +1,4 @@
-import "./Consultation.css"; // Link to your CSS file
+import "./Consultation.css";  
 import Image from "next/image"; // Use Next.js Image component for optimized image handling
 import image1 from "../../public/images/AdobeStock_994072575_Preview.jpeg";
 import image2 from "../../public/images/02_3464BethelDr_574_FrontView_HiRes_450x250.jpg";
@@ -7,9 +7,9 @@ const Booking: React.FC = () => {
   return (
     <div>
       {/* Hero Section */}
-      <section className="hero">
+      <section className="hero1">
         <div className="overlay"></div>
-        <div className="hero-content">
+        <div className="hero1-content">
           <h1>Visit us for expert pet care</h1>
           <p>Where compassion meets excellence!</p>
           <a href="/bookingvisit" className="btn primary">

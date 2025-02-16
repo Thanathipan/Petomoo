@@ -1,53 +1,205 @@
+/* Universal Styles */
+body, html {
+  height: 100%;
+  margin: 0;
+  background-color: rgb(255, 255, 255);
+  color: rgb(34, 149, 178);
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box; /* Consistency across all elements */
+}
+
+/* Profile Container */
 .profileContainer {
-    max-width: 600px;
-    margin: auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 10px solid black;
+  border-radius: 30px;
+  height: 100vh;
+}
+
+/* Header Section */
+.headerprofile {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px;
+}
+
+/* Profile Content */
+.contentprofile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px;
+  gap: 20px;
+}
+
+/* Profile Image */
+.imageprofile {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.imageprofile img {
+  width: 150px;
+  height: 150px;
+  border-radius: 30%;
+  border: 3px solid #b3acac;
+  object-fit: cover;
+}
+
+/* Profile Info */
+.infoprofile {
+  text-align: center;
+  color: black;
+}
+
+.infoprofile h1 {
+  font-size: 24px;
+  margin: 20px 0;
+}
+
+.userEmail {
+  font-size: 18px;
+  color: gray;
+  margin-bottom: 20px;
+}
+
+/* Form Section */
+.formInputs {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-right: 100px;
+}
+
+.formGroup {
+  position: relative;
+  width: 100%;
+}
+
+/* Input Fields */
+.formGroup input {
+  width: 80%;
+  padding: 15px 20px;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  color: black;
+  font-size: 18px;
+  transition: border-color 0.3s ease-in-out;
+  padding-right: 50px; /* Space for edit icon */
+  margin-left: 60px;
+  /* margin-right: 50px; */
+}
+
+.formGroup input::placeholder {
+  color: #888;
+}
+
+.formGroup input:focus {
+  outline: none;
+  border-color: #0B63F8;
+}
+
+/* Edit Icon */
+.editSymbol {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  color: #0B63F8;
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out;
+}
+
+.editSymbol:hover {
+  color: #1eb9ac;
+}
+
+/* Save Button */
+.buttonSave {
+  background-color: #1873e8;
+  color: white;
+  padding: 15px 25px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  max-width: 250px;
+  margin: 10px 0 20px;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+/* Hover and Active Effects */
+.buttonSave:hover {
+  background-color: rgb(18, 59, 192);
+  transform: scale(1.1);
+}
+
+.buttonSave:active {
+  transform: scale(0.95);
+}
+
+/* Logout Button */
+.logoutButton {
+  background-color: rgb(235, 81, 92);
+  color: white;
+  padding: 10px 0px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  max-width: 250px;
+  font-size: 17px;
+  width: 100px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.logoutButton:hover {
+  background-color: rgb(200, 50, 60);
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .profileContainer {
+      max-width: 80%;
   }
-  
-  .header {
-    display: flex;
-    justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+  .profileContainer {
+      max-width: 90%;
+      padding: 15px;
   }
-  
-  .logoutButton {
-    background: red;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    border-radius: 5px;
+}
+
+@media (max-width: 480px) {
+  .profileContainer {
+      max-width: 95%;
+      padding: 10px;
   }
-  
-  .content {
-    text-align: center;
+
+  .buttonSave, .logoutButton {
+      padding: 10px 20px;
+      font-size: 14px;
   }
-  
-  .imageContainer {
-    margin-bottom: 20px;
+
+  .infoprofile h1 {
+      font-size: 20px;
   }
-  
-  .info p {
-    font-size: 18px;
-  }
-  
-  .form input {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .editButton, .saveButton {
-    background: blue;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-top: 10px;
-  }
+}

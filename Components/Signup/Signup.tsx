@@ -11,6 +11,11 @@ const Signup: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -80,13 +85,18 @@ const Signup: React.FC = () => {
           />
           <div className="password-field">
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <span className="eye-icon">👁️</span>
+            <span
+              className="eye-icon"
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? '🙈' : '👁️'}
+            </span>
           </div>
           <button type="submit">Sign Up</button>
         </form>

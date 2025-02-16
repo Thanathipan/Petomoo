@@ -21,7 +21,7 @@ const Footer: React.FC = () => {
                 </div>
             </div>
             <div className="footer-column">
-                <h3>Join as pawfamily and get 10% OFF</h3>
+                <h3>Join as petofamily !!</h3>
                 <p>Our services are wide open for you</p>
                 <button className="promo-button">Be with petomoo</button>
             </div>

@@ -6,7 +6,7 @@ body {
 }
 
 .form-container {
-  width: 800px; /* Fixed width for desktop */
+  width: 800px; 
   margin: 2rem auto;
   background: #fff;
   border-radius: 8px;

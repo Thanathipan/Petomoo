@@ -2,16 +2,15 @@
 .clinic-hero {
   background-image: url(../../public/images/pexels-wildlittlethingsphoto-3292065.jpg);
   background-size: cover;
-  /* Replace with your hero image */
-  height: 110vh;
-  width: 100%;
-
+  background-position: center;
+  height: 100vh;
   display: flex;
-  align-items: center;
   justify-content: center;
-  position: relative;
-  color: #fff;
+  align-items: center;
   text-align: center;
+  color: white;
+  padding: 20px;
+  position: relative;
 }
 
 .hero-overlay h1 {

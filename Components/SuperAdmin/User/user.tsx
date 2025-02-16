@@ -68,7 +68,6 @@ const Users: React.FC = () => {
 
       <div className="content-area">
         <div className="header">
-          <h1>Users</h1>
         </div>
         <div className="user-cards-container">
           {users.length > 0 ? (

@@ -1,6 +1,8 @@
 import React from 'react';
 import Profile from '../../../Components/Profile/Profile';
-import Navbar from '../../../Components/Navbar2/Navbar2.module';
+import Navbar from '../../../Components/Navbar/Navbar';
+import Waiting from '../../../Components/Waiting/Waiting';
+
 
 const App: React.FC = () => {
     return (
@@ -9,6 +11,8 @@ const App: React.FC = () => {
                     <Navbar />
                     </div>
             <Profile />
+            <Waiting />
+
 
         </>
     );

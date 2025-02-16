@@ -43,7 +43,7 @@ const Login: React.FC = () => {
         // ✅ Redirect based on user role
         switch (user.role) {
           case 'user':
-            router.push('/landingpage2');
+            router.push('/landingpage');
             break;
           case 'clinicadmin':
             router.push('/dashboard/clinicadmin');
