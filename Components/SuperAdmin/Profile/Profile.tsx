@@ -25,30 +25,7 @@ const profile = () => {
   const [isModified, setIsModified] = useState(false);
   const [id, setId] = useState("");
 
-  // useEffect(() => {
-  //   const user = localStorage.getItem("user");
 
-  //   if (!user || user === "undefined" || user === "null") {
-  //     router.push("/Profile"); // Redirect to login if not authenticated or invalid data
-  //   } else {
-  //     try {
-  //       const parsedUser = JSON.parse(user);
-
-  //       if (!parsedUser._id) {
-  //         console.warn("User ID is missing. Redirecting to login.");
-  //         localStorage.removeItem("user"); // Clear corrupted data
-  //         router.push("/login");
-  //         return;
-  //       }
-
-  //       setUserData(parsedUser);
-  //     } catch (error) {
-  //       console.error("Error parsing user data:", error);
-  //       localStorage.removeItem("user"); // Clear corrupted data
-  //       router.push("/login");
-  //     }
-  //   }
-  // }, [router]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -157,16 +134,19 @@ const profile = () => {
       phoneNumber: false,
     });
   };
-
   const handleLogout = async () => {
     try {
       const response = await fetch("/api/logout", {
-        method: "GET",
+        method: "POST", // Ensure it's a POST request
       });
   
       if (response.ok) {
-        localStorage.removeItem("user"); // Clear localStorage
-        router.push("/login"); // Redirect to login
+        localStorage.removeItem("user"); // Clear local storage
+        toast.success("Logout successful!", { theme: "dark" }); // Show success toast
+  
+        setTimeout(() => {
+          router.push("/login"); // Redirect to login after toast
+        }, 2000); // Delay redirection slightly so the user sees the toast
       } else {
         toast.error("Logout failed. Please try again.");
       }
@@ -174,6 +154,7 @@ const profile = () => {
       toast.error("An error occurred while logging out.");
     }
   };
+  
   
   return (
     <div  className={styles.profileContainer}>

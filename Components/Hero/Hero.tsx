@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import Heroimg from '../../public/images/pexels-caio-69371.jpg';
+import Heroimg from '../../public/images/pexels-burst-374825.jpg';
 import './Hero.css';
 
 const Hero: React.FC = () => {
@@ -11,7 +11,6 @@ const Hero: React.FC = () => {
           src={Heroimg} 
           alt="Puppies" 
           className="hero-image" 
-          layout="responsive" 
           priority 
         />
       </div>
