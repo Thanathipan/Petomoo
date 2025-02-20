@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import "./booking.css"; // Import the updated CSS file
 
 interface Booking {
   _id: string;
@@ -43,11 +44,11 @@ export default function SuperAdminDashboard() {
   }, []);
 
   return (
-    <div>
+    <div className="super-admin-dashboard">
       <h1>Super Admin Dashboard - Bookings</h1>
       {loading && <p>Loading bookings...</p>}
-      {error && <p>{error}</p>}
-      <table border={1} cellPadding={10} cellSpacing={0}>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <table>
         <thead>
           <tr>
             <th>Name</th>

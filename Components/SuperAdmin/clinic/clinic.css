@@ -1,23 +1,8 @@
-body {
-    font: sans-serif "Arial", sans-serif;
-    background: #f0f2f5;
-    margin: 0;
-    padding: 0;
-  }
+
   
   .add-clinic-container {
-    /* width: 500px;
-    margin: 40px auto;
-    padding: 25px;
-    margin-top: 800px;
-    gap: 100px;
-    background: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out;
-    display:flexbox;
-    flex-wrap: wrap; */
-    margin-top: 500px;
+
+    margin-top: 200px;
 
     
   }
@@ -170,5 +155,69 @@ body {
     li strong {
       font-size: 20px;
     }
+  }
+  .analytics-section {
+    text-align: center;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins";
+    color: #1a1a59;
+    height: 100vh;
+  }
+  
+  
+  
+  
+  
+  .main-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+    color: #f5f0fa;
+    margin-bottom: 20px;
+  }
+  
+  .cards-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  
+  .card {
+    background-color: #dbd9e8;
+    width: 250px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #1a1a59;
+  }
+  
+  .card p {
+    font-size: 1.2rem;
+  }
+  
+  .card:hover {
+    background-color: #c9c4df;
+    transform: scale(1.05);
+    transition: 0.3s ease-in-out;
   }
   

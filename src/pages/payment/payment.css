@@ -1,0 +1,30 @@
+.payment-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.payment-box {
+    max-width: 960px;
+    width: 100%;
+    padding: 40px;
+    text-align: center;
+    border: 1px solid white;
+    margin: 40px;
+    border-radius: 10px;
+    background: linear-gradient(to top right, #3498db, #2980b9);
+    color: white;
+}
+
+.payment-header {
+    margin-bottom: 40px;
+}
+
+.payment-amount {
+    font-size: 24px;
+}
+
+.bold-text {
+    font-weight: bold;
+}

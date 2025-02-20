@@ -3,23 +3,21 @@ body, html {
     height: 100;
     margin: 0;
     background-color: rgb(255, 255, 255);
-    color: rgb(34, 149, 178);
     font-family: 'Poppins';
     box-sizing: border-box; /*Universal box-sizing for consistency*/
 }
 
 /* profile Container */
 .profileContainer {
-    /* display: flex; */
+    margin-top: 200px;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
     height: 100%;
-    padding-top: 80px;
-    /* background-color: rgb(24, 119, 146); */
+    padding-top: 30px;
     color: rgb(245, 245, 245);
     border: 10px solid black;
     border-radius: 30px;
+    width:700px;
 }
 
 /* Header Section */
@@ -100,7 +98,7 @@ body, html {
 /* Form Section */
 .formInputs {
     width: 100%;
-    max-width: 500px;
+    max-width: 400px;
     display: flex;
     flex-direction: column;
     gap: 20px;

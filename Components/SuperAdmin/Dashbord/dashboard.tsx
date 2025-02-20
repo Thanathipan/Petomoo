@@ -8,7 +8,7 @@ import Logo from "../../../public/images/logo.png"; // Ensure this path is corre
 import "./dashboard.css"; // Ensure the CSS file exists
 import Users from "../User/user";
 import Bookings from "../booking/booking";
-import Payments from "../Payment/payment";
+import Payments from "../Paymentlist/paymentlist";
 import Addclinic from "../clinic/clinic";
 import Profile from "../Profile/Profile";
 

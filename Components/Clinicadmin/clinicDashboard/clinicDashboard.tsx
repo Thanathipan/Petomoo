@@ -6,9 +6,10 @@ import React, { useState, JSX } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import Payment from "../Payment/payment";
+import Payment from "../Paymentlist/paymentlist";
 import Bookings from "../booking/booking"; 
 import Profile from "../Profile/Profile";
+
 
 
 const Orders: React.FC = () => {
@@ -17,7 +18,7 @@ const Orders: React.FC = () => {
   const buttons = [ 'Payment', 'Booking',"Profile"];
 
   const panelComponents: Record<string, JSX.Element> = {
-    Payments: <Payment />,
+    Payment: <Payment />,
     Booking: <Bookings />,
     Profile: <Profile />,
 
