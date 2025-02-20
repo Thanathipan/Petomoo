@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import "./Waiting.css";
 
-
 const WaitingPage: React.FC = () => {
   const router = useRouter();
   const [bookingStatus, setBookingStatus] = useState<"pending" | "accepted" | "declined">("pending");
@@ -32,8 +31,15 @@ const WaitingPage: React.FC = () => {
 
   return (
     <div className="waiting-page">
-      {bookingStatus === "pending" && <p>Your booking is pending. Please wait...</p>}
-      {bookingStatus === "declined" && <p>Your booking has been declined.</p>}
+      {bookingStatus === "pending" && (
+        <p className="waiting-text">
+          Your booking is pending. Please wait
+          <span className="dots">
+            <span>.</span><span>.</span><span>.</span>
+          </span>
+        </p>
+      )}
+      {bookingStatus === "declined" && <p className="waiting-text">Your booking has been declined.</p>}
     </div>
   );
 };

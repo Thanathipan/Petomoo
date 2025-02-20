@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import "./booking.css";
 
 interface Booking {
   _id: string;
@@ -87,20 +88,22 @@ const ClinicAdminPage: React.FC = () => {
                 <td>{booking.status}</td>
                 <td>
                   {booking.status === "pending" && (
-                    <>
+                    <div>
                       <button 
+                        className="accept-button"
                         onClick={() => handleStatusChange(booking._id, "accepted")}
                         disabled={updating === booking._id}
                       >
                         {updating === booking._id ? "Updating..." : "Accept"}
                       </button>
                       <button 
+                        className="decline-button"
                         onClick={() => handleStatusChange(booking._id, "declined")}
                         disabled={updating === booking._id}
                       >
                         {updating === booking._id ? "Updating..." : "Decline"}
                       </button>
-                    </>
+                    </div>
                   )}
                 </td>
               </tr>

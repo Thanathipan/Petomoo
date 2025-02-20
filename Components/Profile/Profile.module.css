@@ -4,7 +4,7 @@ body, html {
     margin: 0;
     background-color: rgb(255, 255, 255);
     color: rgb(34, 149, 178);
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-family: poppins;
     box-sizing: border-box; /*Universal box-sizing for consistency*/
 }
 
@@ -20,7 +20,6 @@ body, html {
     color: rgb(245, 245, 245);
     border: 10px solid black;
     border-radius: 30px;
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
 
 }
 
@@ -33,6 +32,8 @@ body, html {
     max-width: 1200px;
     padding: 40px;
     padding-top: 55px;
+    font-family: poppins;
+
 }
 
 
@@ -63,14 +64,14 @@ body, html {
 .infoprofile {
     text-align: center;
     color: black;
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-family: poppins;
 
 }
 
 .infoprofile h1 {
     font-size: 24px;
     margin: 20px 0;
-    font-family:  sans-serif;
+    font-family: poppins;
 }
 
 .userEmail {
@@ -165,7 +166,7 @@ body, html {
     cursor: pointer;
     width: 10%;
     max-width: 250px;
-    font-family: 'poppins';
+    font-family: poppins;
     font-size:17PX;
 }
 

@@ -1,4 +1,5 @@
 "use client";
+import './success.css';
 
 import { useRouter } from "next/navigation";
 
