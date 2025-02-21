@@ -1,5 +1,5 @@
 
-body, html {
+:global(body, html)  {
     height: 100;
     margin: 0;
     background-color: rgb(255, 255, 255);
@@ -150,7 +150,6 @@ body, html {
     cursor: pointer;
     transition: color 0.3s ease-in-out;
 }
-
 .editSymbol:hover {
     color: #1eb9ac;
 }
