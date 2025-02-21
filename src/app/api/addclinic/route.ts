@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "../../../../Lib/db";
 import Clinic from "../../../../Lib/Models/Addclinic";
 import User from "../../../../Lib/Models/user";
-import bcrypt from "bcrypt";
 
 export async function POST(req: NextRequest) {
   await dbConnect();

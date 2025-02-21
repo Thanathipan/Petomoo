@@ -89,9 +89,9 @@ const ProfilePage = () => {
         setUserData(updatedUser.updatedUser);
 
         toast.success("Profile updated successfully!", { theme: "dark" });
-      } catch (error: any) {
-        console.error("Error updating profile:", error.message);
-        toast.error(`Error: ${error.message}`, { theme: "dark" });
+      } catch (error) {
+        console.error("Error updating profile:", error);
+        toast.error(`Error: ${error}`, { theme: "dark" });
       } finally {
         setIsModified(false);
       }

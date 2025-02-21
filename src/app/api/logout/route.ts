@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-export const POST = async (req: NextRequest) => {
+import {  NextResponse } from 'next/server';
+export const POST = async () => {
     try {
         const response = NextResponse.json({ message: 'Logout successful' });
         response.cookies.set('auth', '', {
@@ -9,8 +9,8 @@ export const POST = async (req: NextRequest) => {
             maxAge: 0,
         });
         return response;
-    } catch (error: any) {
+    } catch (error) {
         console.error('Error during logout:', error);
-        return NextResponse.json({ error: 'Server error', details: error.message }, { status: 500 });
+        return NextResponse.json({ error: 'Server error', details: error }, { status: 500 });
     }
 };

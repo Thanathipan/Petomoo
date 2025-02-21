@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dbConnect from "../../../../Lib/db";
 import userModel from "../../../../Lib/Models/user";
@@ -9,16 +8,18 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 // Route for user registration
 export async function POST(req: NextRequest) {
-  const { firstName, lastName, email, password, phoneNumber } = await req.json();
-
   try {
+    const { firstName, lastName, email, password, phoneNumber } = await req.json();
+
     await dbConnect();
 
+    // Check if email already exists
     const existingUser = await userModel.findOne({ email });
     if (existingUser) {
       return NextResponse.json({ message: "Email already exists" }, { status: 400 });
     }
 
+    // Check if phone number already exists
     const existingPhoneNumber = await userModel.findOne({ phoneNumber });
     if (existingPhoneNumber) {
       return NextResponse.json({ message: "Phone number already exists" }, { status: 400 });
@@ -26,6 +27,7 @@ export async function POST(req: NextRequest) {
 
     const role = "user";
 
+    // Create new user
     const newUser = new userModel({
       firstName,
       lastName,
@@ -37,12 +39,17 @@ export async function POST(req: NextRequest) {
 
     await newUser.save();
 
+    // Generate JWT token
     const token = jwt.sign({ id: newUser._id, email: newUser.email }, JWT_SECRET!, {
       expiresIn: "1h",
     });
 
-    const response = NextResponse.json({ message: "User registered successfully", token }, { status: 201 });
+    const response = NextResponse.json(
+      { message: "User registered successfully", token },
+      { status: 201 }
+    );
 
+    // Set auth token as HTTP-only cookie
     response.cookies.set("auth", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -53,20 +60,20 @@ export async function POST(req: NextRequest) {
 
     return response;
   } catch (error) {
-    console.error(error);
+    console.error("Error in user registration:", error);
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json({ message: "Something went wrong", error: errorMessage }, { status: 500 });
   }
 }
 
 // Route for fetching all users
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     await dbConnect();
-    const users = await userModel.find({}, "-password");
+    const users = await userModel.find({}, "-password"); // Exclude password field
     return NextResponse.json({ users }, { status: 200 });
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching users:", error);
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json({ message: "Something went wrong", error: errorMessage }, { status: 500 });
   }
@@ -75,12 +82,13 @@ export async function GET(req: NextRequest) {
 // Route for updating user details
 export async function PUT(req: NextRequest) {
   try {
-    await dbConnect();
     const { id, firstName, lastName, phoneNumber } = await req.json();
 
     if (!id) {
       return NextResponse.json({ message: "User ID is required" }, { status: 400 });
     }
+
+    await dbConnect();
 
     const updatedUser = await userModel.findByIdAndUpdate(
       id,
@@ -94,20 +102,23 @@ export async function PUT(req: NextRequest) {
 
     return NextResponse.json({ message: "User updated successfully", user: updatedUser }, { status: 200 });
   } catch (error) {
-    console.error(error);
+    console.error("Error updating user:", error);
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json({ message: "Something went wrong", error: errorMessage }, { status: 500 });
   }
 }
 
+// Route for deleting a user
 export async function DELETE(req: NextRequest) {
   try {
-    await dbConnect();
-    const { id } = await req.json();
+    const body = await req.json();
+    const { id } = body;
 
     if (!id) {
       return NextResponse.json({ message: "User ID is required" }, { status: 400 });
     }
+
+    await dbConnect();
 
     const deletedUser = await userModel.findByIdAndDelete(id);
 

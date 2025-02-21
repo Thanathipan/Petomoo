@@ -5,9 +5,7 @@ import ConvertToSubcurrency from "../../../Lib/ConvertToSubcurrency"
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from "@stripe/stripe-js"
 import '../../app/globals.css'
-import { useRouter, useSearchParams } from "next/navigation"
-import axios from "axios"
-import { useEffect, useState } from "react"
+import {  useSearchParams } from "next/navigation"
 import "./payment.css"
 
 if (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY === undefined) {

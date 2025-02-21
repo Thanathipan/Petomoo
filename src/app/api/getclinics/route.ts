@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
+import {  NextResponse } from "next/server";
 import dbConnect from "../../../../Lib/db";
 import Clinic from "../../../../Lib/Models/Addclinic";
 import User from "../../../../Lib/Models/user";
 
-export async function GET(req: NextRequest) {
+export async function GET( ) {
   await dbConnect();
 
   try {

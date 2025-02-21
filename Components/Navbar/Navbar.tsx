@@ -19,7 +19,7 @@ const Navbar: React.FC = () => {
   if (cookieResponse.status === 200 && cookieResponse.data.user) {
     setIsLoggedIn(true);
   }
-} catch (error: any) {
+} catch (error) {
   setIsLoggedIn(false); // Ensure proper state handling
 }
 

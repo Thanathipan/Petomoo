@@ -4,6 +4,18 @@ import User from "../../../../Lib/Models/user";
 import bcrypt from "bcrypt";
 import mongoose from "mongoose";
 
+interface UserData {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phoneNumber?: number;
+  password?: string;
+  clinicId?: mongoose.Types.ObjectId;
+
+
+
+}
+
 // ✅ GET Clinic Admin by ID
 export async function GET(req: NextRequest) {
   await dbConnect();
@@ -24,9 +36,9 @@ export async function GET(req: NextRequest) {
     }
 
     return NextResponse.json(admin, { status: 200 });
-  } catch (error:any) {
+  } catch (error) {
     console.error("❌ Error in GET Clinic Admin:", error);
-    return NextResponse.json({ message: "Server error", error: error.message }, { status: 500 });
+    return NextResponse.json({ message: "Server error", error }, { status: 500 });
   }
 }
 
@@ -42,7 +54,7 @@ export async function PUT(req: NextRequest) {
     }
 
     // ✅ Prepare Update Data
-    const updateData: any = {};
+    const updateData: UserData = {};
     if (firstName) updateData.firstName = firstName;
     if (lastName) updateData.lastName = lastName;
     if (email) updateData.email = email;
@@ -57,8 +69,8 @@ export async function PUT(req: NextRequest) {
     }
 
     return NextResponse.json({ message: "Profile updated successfully!", updatedAdmin }, { status: 200 });
-  } catch (error: any) {
+  } catch (error) {
     console.error("❌ Error in PUT Clinic Admin:", error);
-    return NextResponse.json({ message: "Server error", error: error.message }, { status: 500 });
+    return NextResponse.json({ message: "Server error", error }, { status: 500 });
   }
 }
