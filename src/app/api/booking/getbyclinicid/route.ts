@@ -32,9 +32,9 @@ console.log(bookings)
             { status: 200 }
 
         );
-    } catch (error: any) {
+    } catch (error) {
         return NextResponse.json(
-            { message: "Error fetching bookings", error: error.message },
+            { message: "Error fetching bookings", error },
             { status: 500 }
         );
     }

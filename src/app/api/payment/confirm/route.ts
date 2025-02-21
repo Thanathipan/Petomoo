@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
+import Stripe from "stripe";
 
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
-export const POST = async (req: NextResponse) => {
+export const POST = async (req: Request) => {
     try {
         const { amount } = await req.json();
 
@@ -12,12 +13,12 @@ export const POST = async (req: NextResponse) => {
             automatic_payment_methods: { enabled: true }
         });
 
-        return NextResponse.json({ clientSecret: payment.client_secret })
+        return NextResponse.json({ clientSecret: payment.client_secret });
     } catch (error) {
-        console.error('Internal Error:', error)
+        console.error('Internal Error:', error);
         return NextResponse.json(
             { error: `Internal Server Error: ${error}` },
             { status: 500 }
         );
     }
-}
+};

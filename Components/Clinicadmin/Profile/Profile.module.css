@@ -1,11 +1,4 @@
 
-body, html {
-    height: 100;
-    margin: 0;
-    background-color: rgb(255, 255, 255);
-    font-family: 'Poppins';
-    box-sizing: border-box; /*Universal box-sizing for consistency*/
-}
 
 /* profile Container */
 .profileContainer {
@@ -15,7 +8,7 @@ body, html {
     height: 100%;
     padding-top: 30px;
     color: rgb(245, 245, 245);
-    border: 10px solid black;
+    border: 8px solid black;
     border-radius: 30px;
     width:700px;
 }

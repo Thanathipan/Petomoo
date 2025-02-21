@@ -16,8 +16,8 @@ const dbConnect = async () => {
       bufferCommands: true,
     });
     console.log("MongoDB connected successfully");
-  } catch (error: any) {
-    console.log("MongoDB connection error:", error.message);
+  } catch (error) {
+    console.log("MongoDB connection error:", error);
     throw new Error("MongoDB connection failed");
   }
 };

@@ -1,9 +1,8 @@
-import { NextResponse, NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import Payment from "../../../../Lib/Models/Payment";
 import dbConnect from "../../../../Lib/db";
 import User from "../../../../Lib/Models/user";
 
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 export const POST = async (req: NextResponse) => {
   try {

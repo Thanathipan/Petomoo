@@ -58,7 +58,7 @@ const Login: React.FC = () => {
       } else {
         setErrorMessage(result.message);
       }
-    } catch (error: any) {
+    } catch (error) {
       setErrorMessage('Something went wrong. Please try again.');
     }
   };

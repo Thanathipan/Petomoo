@@ -1,53 +1,60 @@
-/* General Styles */
-body {
-    margin: 0;
-    padding: 0;
-    font-family: "Poppins", sans-serif;
-    background-color: #E8F6F3; /* Soft teal background */
-    color: #2C3E50; /* Dark text */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Full height */
+/* success.css */
+.success-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #4CAF50, #2E7D32);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.success-box {
+  text-align: center;
+  padding: 50px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  color: white;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  max-width: 600px;
+  width: 90%;
+}
+
+.success-title {
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.success-message {
+  font-size: 1.8rem;
+  margin-top: 20px;
+}
+
+.success-amount {
+  font-weight: bold;
+  font-size: 2rem;
+  color: #FFD700;
+}
+
+.success-details {
+  font-size: 1.2rem;
+  margin-top: 20px;
+  line-height: 1.6;
+}
+
+.success-highlight {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #ffeb3b;
+}
+
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: scale(0.95);
   }
-  
-  /* Success Container */
-  .payments-container {
-    background: white;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    width: 400px;
+  to {
+      opacity: 1;
+      transform: scale(1);
   }
-  
-  /* Header */
-  .payments-container h1 {
-    font-size: 1.8rem;
-    color: #27AE60; /* Green success color */
-    margin-bottom: 15px;
-  }
-  
-  /* Description */
-  .payments-container p {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-  }
-  
-  /* Dashboard Button */
-  .payments-container button {
-    background-color: #27AE60; /* Success green */
-    color: white;
-    font-size: 1.1rem;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    width: 100%;
-  }
-  
-  .payments-container button:hover {
-    background-color: #219150; /* Darker green */
-  }
-  
+}

@@ -1,13 +1,4 @@
 
-:global(body, html)  {
-    height: 100;
-    margin: 0;
-    background-color: rgb(255, 255, 255);
-    color: rgb(34, 149, 178);
-    font-family: poppins;
-    box-sizing: border-box; /*Universal box-sizing for consistency*/
-}
-
 /* profile Container */
 .profileContainer {
     /* display: flex; */
@@ -18,8 +9,12 @@
     padding-top: 80px;
     /* background-color: rgb(24, 119, 146); */
     color: rgb(245, 245, 245);
-    border: 10px solid black;
+    border: 6px solid black;
     border-radius: 30px;
+    background-color: rgb(255, 255, 255);
+    color: rgb(34, 149, 178);
+    font-family: poppins;
+    box-sizing: border-box;
 
 }
 
