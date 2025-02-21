@@ -4,10 +4,10 @@ import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styles from "./Profile.module.css";
-import Profile from'../../public/images/AdobeStock_465514906_Preview.jpeg';
+import Profile from "../../public/images/AdobeStock_465514906_Preview.jpeg";
 import axios from "axios";
 
-const profile = () => {
+const ProfilePage = () => {
   const router = useRouter();
   const [userData, setUserData] = useState({
     _id: "",
@@ -15,6 +15,7 @@ const profile = () => {
     lastName: "",
     email: "",
     phoneNumber: "",
+    role: "", // Added role field to verify access
   });
   const [isEditing, setIsEditing] = useState({
     firstName: false,
@@ -23,47 +24,29 @@ const profile = () => {
     phoneNumber: false,
   });
   const [isModified, setIsModified] = useState(false);
-  const [id, setId] = useState("");
-
-  // useEffect(() => {
-  //   const user = localStorage.getItem("user");
-
-  //   if (!user || user === "undefined" || user === "null") {
-  //     router.push("/Profile"); // Redirect to login if not authenticated or invalid data
-  //   } else {
-  //     try {
-  //       const parsedUser = JSON.parse(user);
-
-  //       if (!parsedUser._id) {
-  //         console.warn("User ID is missing. Redirecting to login.");
-  //         localStorage.removeItem("user"); // Clear corrupted data
-  //         router.push("/login");
-  //         return;
-  //       }
-
-  //       setUserData(parsedUser);
-  //     } catch (error) {
-  //       console.error("Error parsing user data:", error);
-  //       localStorage.removeItem("user"); // Clear corrupted data
-  //       router.push("/login");
-  //     }
-  //   }
-  // }, [router]);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get('/api/cookie');
-        setId(response.data.user.id);
+        const response = await axios.get("/api/cookie");
 
         if (!response.data.user) {
           router.push("/login");
+          return;
         }
 
         const user = await axios.get(`/api/Profile?id=${response.data.user.id}`);
+
+        // Allow only "user" and "superadmin"
+        if (user.data.role !== "user" && user.data.role !== "superadmin") {
+          router.push("/login");
+          return;
+        }
+
         setUserData(user.data);
       } catch (error) {
-        
+        console.error("Error fetching user:", error);
+        router.push("/login");
       }
     };
 
@@ -77,28 +60,6 @@ const profile = () => {
     }));
   };
 
-  const handleLogout = async () => {
-    try {
-      const response = await fetch("/api/logout", {
-        method: "POST", // Ensure it's a POST request
-      });
-  
-      if (response.ok) {
-        localStorage.removeItem("user"); // Clear local storage
-        toast.success("Logout successful!", { theme: "dark" }); // Show success toast
-  
-        setTimeout(() => {
-          router.push("/login"); // Redirect to login after toast
-        }, 2000); // Delay redirection slightly so the user sees the toast
-      } else {
-        toast.error("Logout failed. Please try again.");
-      }
-    } catch (error) {
-      toast.error("An error occurred while logging out.");
-    }
-  };
-  
-  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
     setUserData((prevState) => ({
       ...prevState,
@@ -127,42 +88,15 @@ const profile = () => {
         localStorage.setItem("user", JSON.stringify(updatedUser.updatedUser)); // Save updated data
         setUserData(updatedUser.updatedUser);
 
-        toast.success("profile updated successfully!", {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
+        toast.success("Profile updated successfully!", { theme: "dark" });
       } catch (error: any) {
         console.error("Error updating profile:", error.message);
-        toast.error(`Error: ${error.message}`, {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
+        toast.error(`Error: ${error.message}`, { theme: "dark" });
       } finally {
         setIsModified(false);
       }
     } else {
-      toast.info("No changes were made.", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
+      toast.info("No changes were made.", { theme: "dark" });
     }
 
     setIsEditing({
@@ -173,17 +107,32 @@ const profile = () => {
     });
   };
 
-  // const handleLogout = () => {
-  //   localStorage.removeItem("user"); // Clear user data from localStorage
-  //   router.push("/login"); // Redirect to login page
-  // };
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("/api/logout", {
+        method: "POST",
+      });
 
-  
+      if (response.ok) {
+        localStorage.removeItem("user"); 
+        toast.success("Logout successful!", { theme: "dark" });
+
+        setTimeout(() => {
+          router.push("/login");
+        }, 2000);
+      } else {
+        toast.error("Logout failed. Please try again.");
+      }
+    } catch (error) {
+      toast.error("An error occurred while logging out.");
+    }
+  };
+
   return (
     <div className={styles.profileContainer}>
       <ToastContainer />
       <div className={styles.headerprofile}>
-        <button  className={styles.logoutButton} onClick={handleLogout}>
+        <button className={styles.logoutButton} onClick={handleLogout}>
           Logout
         </button>
       </div>
@@ -194,7 +143,7 @@ const profile = () => {
         </div>
 
         <div className={styles.infoprofile}>
-          <h1>Edit profile</h1>
+          <h1>Edit Profile</h1>
           <p className={styles.userEmail}>{userData.email || "No email available"}</p>
         </div>
 
@@ -228,4 +177,4 @@ const profile = () => {
   );
 };
 
-export default profile;
+export default ProfilePage;

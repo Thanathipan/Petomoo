@@ -1,42 +1,86 @@
-"use client";
+'use client'
 
-import React, { useState } from "react";
-import { loadStripe } from "@stripe/stripe-js";
+import React, { useEffect, useState } from "react";
+import { useStripe, useElements, PaymentElement } from "@stripe/react-stripe-js";
+import ConvertToSubcurrency from "../../Lib/ConvertToSubcurrency";
+import "./Payment.css"; // Import external CSS
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY as string);
+const Checkout = ({ finalAmount, bookingId, userId }: { finalAmount: number, bookingId: string, userId: string }) => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const amount = Number((finalAmount / 296.73).toFixed(2));
 
-const Payments: React.FC = () => {
-  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>();
+  const [clientSecret, setClientSecret] = useState('');
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const handlePayment = async () => {
+  useEffect(() => {
+    fetch('/api/payment/confirm', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ amount: ConvertToSubcurrency(amount) })
+    })
+      .then((res) => res.json())
+      .then((data) => setClientSecret(data.clientSecret));
+  }, [amount]);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setLoading(true);
-    try {
-      const res = await fetch("/api/payment", {
-        method: "POST",
-      });
 
-      const { url } = await res.json();
-      if (url) {
-        window.location.href = url; // Redirect to Stripe checkout
-      }
-    } catch (error) {
-      console.error("Payment Error:", error);
-      alert("Payment failed. Please try again.");
-    } finally {
-      setLoading(false);
+    if (!stripe || !elements) {
+      return;
     }
+
+    const { error: submitError } = await elements.submit();
+
+    if (submitError) {
+      setErrorMessage(submitError.message);
+      setLoading(false);
+      return;
+    }
+
+    const { error } = await stripe.confirmPayment({
+      elements,
+      clientSecret,
+      confirmParams: {
+        return_url: `http://localhost:3000/success?amount=${finalAmount}&bookingId=${bookingId}&userId=${userId}`
+      }
+    });
+
+    if (error) {
+      setErrorMessage(error.message);
+    }
+
+    setLoading(false);
   };
 
-  return (
-    <div className="payments-container">
-      <h1>Payment Details</h1>
-      <p>Amount to be paid: <strong>Rs. 600</strong></p>
+  if (!clientSecret || !stripe || !elements) {
+    return (
+      <span className="loading-container">
+        <svg className="loading-spinner" viewBox="0 0 24 24">
+          <circle className="loading-circle" cx="12" cy="12" r="10" />
+          <path className="loading-path" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+        </svg>
+        Loading...
+      </span>
+    );
+  }
 
-      <button onClick={handlePayment} className="pay-button" disabled={loading}>
-        {loading ? "Processing..." : "Pay Now"}
+  return (
+    <form onSubmit={handleSubmit} className="payments-container">
+      {clientSecret && <PaymentElement />}
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
+      <button
+        disabled={!stripe || loading}
+        className="pay-button"
+      >
+        {loading ? "Processing..." : `Pay LKR ${finalAmount}`}
       </button>
-    </div>
+    </form>
   );
 };
 
-export default Payments;
+export default Checkout;

@@ -25,31 +25,6 @@ const profile = () => {
   const [isModified, setIsModified] = useState(false);
   const [id, setId] = useState("");
 
-  // useEffect(() => {
-  //   const user = localStorage.getItem("user");
-
-  //   if (!user || user === "undefined" || user === "null") {
-  //     router.push("/Profile"); // Redirect to login if not authenticated or invalid data
-  //   } else {
-  //     try {
-  //       const parsedUser = JSON.parse(user);
-
-  //       if (!parsedUser._id) {
-  //         console.warn("User ID is missing. Redirecting to login.");
-  //         localStorage.removeItem("user"); // Clear corrupted data
-  //         router.push("/login");
-  //         return;
-  //       }
-
-  //       setUserData(parsedUser);
-  //     } catch (error) {
-  //       console.error("Error parsing user data:", error);
-  //       localStorage.removeItem("user"); // Clear corrupted data
-  //       router.push("/login");
-  //     }
-  //   }
-  // }, [router]);
-
   useEffect(() => {
     const fetchUser = async () => {
       try {

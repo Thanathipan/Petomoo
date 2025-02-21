@@ -1,40 +1,23 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import dbConnect from "../../../../../Lib/db";
-import Payment from "../../../../../Lib/Models/Payment";
-import Stripe from 'stripe';
+import { NextResponse } from "next/server";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2023-08-16',
-});
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  await dbConnect();
-
-  if (req.method === 'POST') {
-    const { paymentIntentId, userId, amount } = req.body;
-
+export const POST = async (req: NextResponse) => {
     try {
-      // Retrieve the payment intent from Stripe
-      const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+        const { amount } = await req.json();
 
-      // Save the payment details to MongoDB
-      const payment = new Payment({
-        transactionId: paymentIntent.id,
-        userId,
-        amount: paymentIntent.amount / 100, // Convert amount from cents to dollars
-        status: paymentIntent.status,
-        createdAt: new Date(),
-      });
+        const payment = await stripe.paymentIntents.create({
+            amount: amount,
+            currency: 'usd',
+            automatic_payment_methods: { enabled: true }
+        });
 
-      await payment.save();
-
-      res.status(200).json({ success: true, payment });
+        return NextResponse.json({ clientSecret: payment.client_secret })
     } catch (error) {
-      console.error('Error confirming payment:', error);
-      res.status(500).json({ success: false, error: 'Internal Server Error' });
+        console.error('Internal Error:', error)
+        return NextResponse.json(
+            { error: `Internal Server Error: ${error}` },
+            { status: 500 }
+        );
     }
-  } else {
-    res.setHeader('Allow', ['POST']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
-  }
 }
