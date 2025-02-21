@@ -1,21 +1,37 @@
 import { NextResponse, NextRequest } from "next/server";
-import Stripe from "stripe";
+import Payment from "../../../../Lib/Models/Payment";
+import dbConnect from "../../../../Lib/db";
+import User from "../../../../Lib/Models/user";
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 export const POST = async (req: NextResponse) => {
   try {
-    const { amount } = await req.json();
+    const body = await req.json()
+    const { paymentId, userId, bookingId, status, amount } = body;
 
-    const payment = await stripe.paymentIntents.create({
-      amount: amount,
-      currency: 'usd',
-      automatic_payment_methods: { enabled: true }
+    await dbConnect()
+    let updatedStatus = ''
+    if (status === 'succeeded') {
+      updatedStatus = 'paid'
+    } else {
+      updatedStatus = 'failed'
+    }
+
+    const newPayment = new Payment({
+      paymentId,
+      userId,
+      bookingId,
+      status: updatedStatus,
+      amount
     });
 
-    return NextResponse.json({ clientSecret: payment.client_secret })
+    const savedPaymentData = await newPayment.save();
+    console.log(newPayment)
+
+    return NextResponse.json({ payment: savedPaymentData })
   } catch (error) {
-    console.error('Internal Error:', error)
+    console.log('Internal Error:', error)
     return NextResponse.json(
       { error: `Internal Server Error: ${error}` },
       { status: 500 }
@@ -23,35 +39,40 @@ export const POST = async (req: NextResponse) => {
   }
 }
 
-export default async function handler(req: NextRequest) {
-  if (req.method !== "GET") {
-    return NextResponse.json({ error: "Method Not Allowed" }, { status: 405 });
-  }
-
+export const GET = async () => {
   try {
-    const { searchParams } = new URL(req.url);
-    const paymentId = searchParams.get('paymentId');
+    await dbConnect();
+    
+    // Fetch payments
+    const payments = await Payment.find().sort({ createdAt: -1 });
 
-    if (!paymentId || typeof paymentId !== "string") {
-      return NextResponse.json({ error: "Invalid Payment ID" }, { status: 400 });
-    }
+    // Extract unique user IDs from payments
+    const userIds = [...new Set(payments.map(payment => payment.userId.toString()))];
 
-    const paymentIntent = await stripe.paymentIntents.retrieve(paymentId);
+    // Fetch users based on extracted IDs
+    const users = await User.find(
+      { _id: { $in: userIds } }).select('_id firstName lastName email')
 
-    if (!paymentIntent) {
-      return NextResponse.json({ error: "Payment not found" }, { status: 404 });
-    }
+    // Create a user lookup map (userId -> user details)
+    const userMap = new Map(users.map(user => [user._id.toString(), {firstName: user.firstName, lastName: user.lastName, email: user.email, id: user._id}]));
 
-    const paymentData = {
-      paymentId: paymentIntent.id,
-      userId: paymentIntent.metadata.userId || "N/A",
-      userName: paymentIntent.metadata.userName || "N/A",
-      userEmail: paymentIntent.receipt_email || "N/A",
-      price: paymentIntent.amount / 100,
-    };
+    // Merge payment data with user details (only firstName, lastName, email)
+    const mergedPaymentData = payments.map(payment => ({
+      ...payment.toObject(),
+      user: userMap.get(payment.userId.toString() || null)
+    }));
 
-    return NextResponse.json({ paymentData }, { status: 200 });
+    return NextResponse.json(
+      { 
+        message: 'Payments and user details fetched successfully.',
+        payments: mergedPaymentData
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    return NextResponse.json({ error: "Internal Server Error", details: error }, { status: 500 });
+    return NextResponse.json(
+      { message: 'Failed to fetch payments and user details.', error },
+      { status: 500 }
+    );
   }
-}
+};

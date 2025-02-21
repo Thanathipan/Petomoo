@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import "./Waiting.css";
+import axios from "axios";
 
 const WaitingPage: React.FC = () => {
   const router = useRouter();
@@ -15,8 +16,10 @@ const WaitingPage: React.FC = () => {
         const response = await fetch(`/api/booking/status?bookingId=${bookingId}`);
         const data = await response.json();
 
+        const cookieResponse = await axios.get('/api/cookie') 
+
         if (data.status === "accepted") {
-          router.push("/payment");
+          router.push(`/payment?b=${bookingId}&u=${cookieResponse.data.user.id}`);
         } else if (data.status === "declined") {
           setBookingStatus("declined");
         }

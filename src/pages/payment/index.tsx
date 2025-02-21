@@ -5,7 +5,7 @@ import ConvertToSubcurrency from "../../../Lib/ConvertToSubcurrency"
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from "@stripe/stripe-js"
 import '../../app/globals.css'
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import "./payment.css"
@@ -14,11 +14,16 @@ if (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY === undefined) {
     console.error("NEXT_PUBLIC_STRIPE_PUBLIC_KEY is not defined")
 }
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY)
+const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY
+    ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY)
+    : Promise.reject(new Error("NEXT_PUBLIC_STRIPE_PUBLIC_KEY is not defined"));
 
 const PaymentPage = () => {
-    const router = useRouter();
-    const amount = 400 
+    const searchParams = useSearchParams();
+    const bookingId = searchParams ? String(searchParams.get("b")) : '';
+    const userId = searchParams ? String(searchParams.get("u")) : '';
+
+    const amount: number = 400
 
     return (
         <div className="payment-container">
@@ -36,7 +41,7 @@ const PaymentPage = () => {
                         currency: 'usd'
                     }}
                 >
-                    <Payment amount={amount} />
+                    <Payment finalAmount={amount} bookingId={bookingId} userId={userId} />
                 </Elements>
             </div>
         </div>

@@ -1,63 +1,74 @@
-.payment-form {
-  background-color: white;
-  padding: 16px;
-  border-radius: 8px;
-  text-align: center;
-}
-
-.error-message {
-  color: red;
-  margin-top: 10px;
-  font-size: 14px;
-}
-
-.pay-button {
-  background-color: #3498db;
+/* General payment container */
+.payments-container {
   width: 100%;
-  padding: 10px;
-  border-radius: 5px;
-  margin-top: 10px;
-  font-weight: bold;
-  cursor: pointer;
-  border: none;
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Payment button */
+.pay-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
   color: white;
-  transition: opacity 0.3s ease-in-out;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background-color 0.3s ease;
 }
 
 .pay-button:disabled {
-  opacity: 0.5;
+  background-color: #aaa;
   cursor: not-allowed;
-  animation: pulse 1.5s infinite;
 }
 
-@keyframes pulse {
-  0% { opacity: 0.5; }
-  50% { opacity: 0.7; }
-  100% { opacity: 0.5; }
+.pay-button:hover:not(:disabled) {
+  background-color: #0056b3;
 }
 
+/* Error message */
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+/* Loading spinner */
 .loading-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  font-size: 16px;
+  color: #333;
 }
 
 .loading-spinner {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
   animation: spin 1s linear infinite;
-  height: 20px;
-  width: 20px;
-  color: white;
 }
 
-.spinner-circle {
+.loading-circle {
   opacity: 0.25;
+  stroke: #000;
+  stroke-width: 4;
 }
 
-.spinner-path {
+.loading-path {
   opacity: 0.75;
+  fill: #000;
 }
 
+/* Spinner animation */
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
