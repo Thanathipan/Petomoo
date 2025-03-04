@@ -3,6 +3,20 @@ import dbConnect from "../../../../Lib/db";
 import Clinic from "../../../../Lib/Models/Addclinic";
 import User from "../../../../Lib/Models/user";
 
+interface Clinic {
+  _id: string;
+  clinicName: string;
+  location: string;
+}
+
+interface ClinicAdmin {
+  clinicId?: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+}
+
 export async function GET( ) {
   await dbConnect();
 
@@ -12,7 +26,7 @@ export async function GET( ) {
     const clinicAdmins = await User.find({ role: "clinicadmin" }).lean();
 
     // Combine clinic and clinic admin data
-    const clinicData = clinics.map(clinic => {
+    const clinicData = clinics.map((clinic: any) => {
       const admin = clinicAdmins.find(admin => admin.clinicId?.toString() === clinic._id.toString());
       return {
         clinicId: clinic._id,
