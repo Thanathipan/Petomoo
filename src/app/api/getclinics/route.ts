@@ -1,35 +1,38 @@
-import {  NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import dbConnect from "../../../../Lib/db";
 import Clinic from "../../../../Lib/Models/Addclinic";
 import User from "../../../../Lib/Models/user";
 
+// Define interfaces for Clinic and User
 interface Clinic {
   _id: string;
   clinicName: string;
   location: string;
 }
 
-interface ClinicAdmin {
+interface User {
   clinicId?: string;
   firstName: string;
   lastName: string;
   email: string;
   phoneNumber: string;
+  role: string;
 }
 
-export async function GET( ) {
+export async function GET() {
   await dbConnect();
 
   try {
-    // Fetch all clinics with their associated clinic admins
-    const clinics = await Clinic.find().lean();
-    const clinicAdmins = await User.find({ role: "clinicadmin" }).lean();
+    // ✅ Explicitly define the type for clinics and clinicAdmins
+    const clinics = await Clinic.find().lean<Clinic[]>();
+    const clinicAdmins = await User.find({ role: "clinicadmin" }).lean<User[]>();
 
-    // Combine clinic and clinic admin data
-    const clinicData = clinics.map((clinic: any) => {
+    // ✅ Ensure TypeScript correctly understands the data structure
+    const clinicData = clinics.map((clinic) => {
       const admin = clinicAdmins.find(admin => admin.clinicId?.toString() === clinic._id.toString());
+
       return {
-        clinicId: clinic._id,
+        clinicId: clinic._id.toString(), // ✅ Ensure `_id` is converted to a string
         clinicName: clinic.clinicName,
         location: clinic.location,
         admin: admin ? {
