@@ -1,10 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import Payment from "../../../../Lib/Models/Payment";
 import dbConnect from "../../../../Lib/db";
 import User from "../../../../Lib/Models/user";
 
-
-export const POST = async (req: NextResponse) => {
+export const POST = async (req: NextRequest) => {
   try {
     const body = await req.json()
     const { paymentId, userId, bookingId, status, amount } = body;

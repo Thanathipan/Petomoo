@@ -35,7 +35,7 @@ const ProfilePage = () => {
           return;
         }
 
-        const user = await axios.get(`/api/Profile?id=${response.data.user.id}`);
+        const user = await axios.get(`/api/Profile/getUser?id=${response.data.user.id}`);
 
         // Allow only "user" and "superadmin"
         if (user.data.role !== "user" && user.data.role !== "superadmin") {

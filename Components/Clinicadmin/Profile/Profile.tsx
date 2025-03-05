@@ -35,7 +35,7 @@ const profile = () => {
           return;
         }
   
-        const user = await axios.get(`/api/Profile?id=${response.data.user.id}`);
+        const user = await axios.get(`/api/Profile/getUser?id=${response.data.user.id}`);
   
         // Check if the user is a clinic admin
         if (user.data.role !== "clinicadmin") {
