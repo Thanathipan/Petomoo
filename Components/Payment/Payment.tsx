@@ -46,7 +46,7 @@ const Checkout = ({ finalAmount, bookingId, userId }: { finalAmount: number, boo
       elements,
       clientSecret,
       confirmParams: {
-        return_url: `http://localhost:3000/success?amount=${finalAmount}&bookingId=${bookingId}&userId=${userId}`
+        return_url: `https://petomoo.vercel.app/success?amount=${finalAmount}&bookingId=${bookingId}&userId=${userId}`
       }
     });
 
